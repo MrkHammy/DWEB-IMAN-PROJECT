@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="IMGS/LOGO/logo.png" alt="Fox Lab Logo" width="120">
+  <img src="DWEB PROJECT/IMGS/LOGO/logo.png" alt="Fox Lab Logo" width="120">
 </p>
 
 <h1 align="center">Fox Lab</h1>
