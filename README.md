@@ -2,7 +2,7 @@
   <img src="IMGS/LOGO/logo.png" alt="Fox Lab Logo" width="120">
 </p>
 
-<h1 align="center">🦊 Fox Lab</h1>
+<h1 align="center">Fox Lab</h1>
 <p align="center">
   <strong>Cybersecurity Awareness & Training Platform</strong>
 </p>
