@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#1a2332"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <!-- Ascending path -->
+  <path d="M150,280 Q250,270 300,240 Q350,210 380,180 Q420,140 470,120 Q530,95 600,70" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.4" stroke-dasharray="6,3"/>
+  <!-- Path nodes (career stages) -->
+  <circle cx="180" cy="275" r="18" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.5"/>
+  <text x="180" y="279" fill="#00d4ff" font-family="monospace" font-size="9" text-anchor="middle" opacity="0.7">Jr</text>
+  <circle cx="300" cy="240" r="18" fill="none" stroke="#2ECC40" stroke-width="1.5" opacity="0.5"/>
+  <text x="300" y="244" fill="#2ECC40" font-family="monospace" font-size="9" text-anchor="middle" opacity="0.7">Mid</text>
+  <circle cx="400" cy="175" r="20" fill="none" stroke="#f39c12" stroke-width="1.5" opacity="0.6"/>
+  <text x="400" y="179" fill="#f39c12" font-family="monospace" font-size="9" text-anchor="middle" opacity="0.7">Sr</text>
+  <circle cx="510" cy="110" r="22" fill="none" stroke="#e74c3c" stroke-width="1.5" opacity="0.6"/>
+  <text x="510" y="114" fill="#e74c3c" font-family="monospace" font-size="9" text-anchor="middle" opacity="0.7">Lead</text>
+  <circle cx="610" cy="65" r="24" fill="none" stroke="#9b59b6" stroke-width="2" opacity="0.7"/>
+  <text x="610" y="69" fill="#9b59b6" font-family="monospace" font-size="9" text-anchor="middle" opacity="0.8">CISO</text>
+  <!-- Cert badges -->
+  <g opacity="0.35">
+    <rect x="140" y="110" width="75" height="22" rx="11" fill="none" stroke="#00d4ff" stroke-width="1"/>
+    <text x="177" y="125" fill="#00d4ff" font-family="monospace" font-size="9" text-anchor="middle">CompTIA+</text>
+  </g>
+  <g opacity="0.35">
+    <rect x="260" y="90" width="55" height="22" rx="11" fill="none" stroke="#2ECC40" stroke-width="1"/>
+    <text x="287" y="105" fill="#2ECC40" font-family="monospace" font-size="9" text-anchor="middle">CEH</text>
+  </g>
+  <g opacity="0.35">
+    <rect x="370" y="80" width="60" height="22" rx="11" fill="none" stroke="#f39c12" stroke-width="1"/>
+    <text x="400" y="95" fill="#f39c12" font-family="monospace" font-size="9" text-anchor="middle">OSCP</text>
+  </g>
+  <g opacity="0.35">
+    <rect x="490" y="60" width="65" height="22" rx="11" fill="none" stroke="#e74c3c" stroke-width="1"/>
+    <text x="522" y="75" fill="#e74c3c" font-family="monospace" font-size="9" text-anchor="middle">CISSP</text>
+  </g>
+  <!-- Specialty branches -->
+  <g font-family="monospace" font-size="9" opacity="0.25">
+    <text x="200" y="310" fill="#00d4ff">SOC Analyst</text>
+    <text x="310" y="280" fill="#2ECC40">Pen Tester</text>
+    <text x="420" y="220" fill="#f39c12">Architect</text>
+    <text x="540" y="150" fill="#e74c3c">Director</text>
+  </g>
+  <!-- Title -->
+  <text x="400" y="345" fill="white" font-family="Inter,sans-serif" font-size="22" font-weight="700" text-anchor="middle">Cybersecurity Career Paths</text>
+  <text x="400" y="370" fill="#9b59b6" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" opacity="0.8">Fox Lab • 2026</text>
+</svg>

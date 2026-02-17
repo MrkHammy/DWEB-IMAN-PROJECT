@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0a2e"/>
+      <stop offset="100%" style="stop-color:#2d1b69"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <!-- Shield outline -->
+  <path d="M400,60 L460,90 L460,170 Q460,230 400,260 Q340,230 340,170 L340,90 Z" fill="none" stroke="#e74c3c" stroke-width="2.5" opacity="0.6"/>
+  <!-- Top 10 numbered list -->
+  <g font-family="monospace" font-size="13" fill="#e74c3c" opacity="0.7">
+    <text x="365" y="115">01</text>
+    <text x="365" y="135">02</text>
+    <text x="365" y="155">03</text>
+    <text x="365" y="175">04</text>
+    <text x="365" y="195">05</text>
+    <text x="410" y="115">06</text>
+    <text x="410" y="135">07</text>
+    <text x="410" y="155">08</text>
+    <text x="410" y="175">09</text>
+    <text x="410" y="195">10</text>
+  </g>
+  <!-- Bars representing risk levels -->
+  <g opacity="0.5">
+    <rect x="240" y="100" width="80" height="8" rx="4" fill="#e74c3c" opacity="0.9"/>
+    <rect x="240" y="118" width="72" height="8" rx="4" fill="#e74c3c" opacity="0.8"/>
+    <rect x="240" y="136" width="64" height="8" rx="4" fill="#f39c12" opacity="0.8"/>
+    <rect x="240" y="154" width="56" height="8" rx="4" fill="#f39c12" opacity="0.7"/>
+    <rect x="240" y="172" width="48" height="8" rx="4" fill="#f1c40f" opacity="0.7"/>
+  </g>
+  <g opacity="0.5">
+    <rect x="480" y="100" width="80" height="8" rx="4" fill="#f1c40f" opacity="0.6"/>
+    <rect x="480" y="118" width="72" height="8" rx="4" fill="#2ECC40" opacity="0.5"/>
+    <rect x="480" y="136" width="64" height="8" rx="4" fill="#2ECC40" opacity="0.5"/>
+    <rect x="480" y="154" width="56" height="8" rx="4" fill="#2ECC40" opacity="0.4"/>
+    <rect x="480" y="172" width="48" height="8" rx="4" fill="#2ECC40" opacity="0.4"/>
+  </g>
+  <!-- Category labels -->
+  <g font-family="monospace" font-size="9" fill="#fff" opacity="0.35">
+    <text x="245" y="220">Injection</text>
+    <text x="310" y="220">Auth</text>
+    <text x="360" y="220">XSS</text>
+    <text x="405" y="220">CSRF</text>
+    <text x="455" y="220">SSRF</text>
+    <text x="505" y="220">Config</text>
+  </g>
+  <!-- Web icon -->
+  <circle cx="400" cy="160" r="5" fill="none" stroke="#fff" stroke-width="1" opacity="0.2"/>
+  <!-- Title -->
+  <text x="400" y="310" fill="white" font-family="Inter,sans-serif" font-size="22" font-weight="700" text-anchor="middle">OWASP Top 10 Explained</text>
+  <text x="400" y="335" fill="#e74c3c" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" opacity="0.8">Fox Lab • 2026</text>
+</svg>
