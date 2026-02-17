@@ -48,15 +48,15 @@
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src="IMGS/platform_features_imgs/phishing.png" alt="Phishing Simulator" width="280"><br>
+      <img src="DWEB PROJECT/IMGS/platform_features_imgs/phishing.png" alt="Phishing Simulator" width="280"><br>
       <strong>Phishing Simulator</strong>
     </td>
     <td align="center" width="33%">
-      <img src="IMGS/platform_features_imgs/how strong is ur password.png" alt="Password Tester" width="280"><br>
+      <img src="DWEB PROJECT/IMGS/platform_features_imgs/how strong is ur password.png" alt="Password Tester" width="280"><br>
       <strong>Password Tester</strong>
     </td>
     <td align="center" width="33%">
-      <img src="IMGS/platform_features_imgs/online compiler.png" alt="Online Compiler" width="280"><br>
+      <img src="DWEB PROJECT/IMGS/platform_features_imgs/online compiler.png" alt="Online Compiler" width="280"><br>
       <strong>Online Code Compiler</strong>
     </td>
   </tr>
