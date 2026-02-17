@@ -69,6 +69,7 @@ INSERT INTO security_tips (title, description, icon, display_order) VALUES
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS blogs (
     id          INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT DEFAULT NULL,
     title       VARCHAR(255) NOT NULL,
     excerpt     TEXT,
     content     LONGTEXT NOT NULL,
@@ -82,7 +83,8 @@ CREATE TABLE IF NOT EXISTS blogs (
     read_time   INT DEFAULT 5,
     published_at DATE DEFAULT NULL,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 INSERT INTO blogs (title, excerpt, content, category, author, author_org, image_url, read_time, is_featured, published_at) VALUES
@@ -317,7 +319,8 @@ CREATE TABLE IF NOT EXISTS projects (
     code        LONGTEXT,
     is_recent   TINYINT(1) DEFAULT 0,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 INSERT INTO projects (filename, language, code, is_recent) VALUES
@@ -333,6 +336,7 @@ INSERT INTO projects (filename, language, code, is_recent) VALUES
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS security_logs (
     id              INT AUTO_INCREMENT PRIMARY KEY,
+    user_id         INT DEFAULT NULL,
     strength_level  VARCHAR(50) NOT NULL,
     char_count      INT DEFAULT 0,
     has_uppercase   TINYINT(1) DEFAULT 0,
@@ -341,7 +345,8 @@ CREATE TABLE IF NOT EXISTS security_logs (
     has_symbols     TINYINT(1) DEFAULT 0,
     is_compromised  TINYINT(1) DEFAULT 0,
     ip_address      VARCHAR(45) DEFAULT NULL,
-    checked_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    checked_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------
@@ -1945,6 +1950,20 @@ CREATE TABLE IF NOT EXISTS courses (
     image_url   VARCHAR(500) DEFAULT NULL,
     course_url  VARCHAR(500) DEFAULT '#',
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- ----------------------------------------------------------
+-- 10b. User-Course Enrollment (Junction Table)
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS user_courses (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT NOT NULL,
+    course_id   INT NOT NULL,
+    progress    INT DEFAULT 0,
+    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_enrollment (user_id, course_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 INSERT INTO courses (title, language, image_url) VALUES
