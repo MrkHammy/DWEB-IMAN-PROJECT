@@ -182,37 +182,37 @@ DWEB PROJECT/
       <td align="center">
         <strong>Bautista, Mark Anthony</strong>
       </td>
-      <td>Wireframe, GUI, Documentation</td>
+      <td>Wireframe, GUI, Documentation, SQL</td>
       <td align="center">✅</td>
       <td align="center">✅</td>
       <td align="center"></td>
       <td align="center"></td>
-      <td align="center"></td>
+      <td align="center">✅</td>
       <td align="center">✅</td>
     </tr>
     <tr>
       <td align="center">
         <strong>Roque, Daryl John Clark</strong>
       </td>
-      <td>Backend, SQL Integration, Glossary of Terms</td>
+      <td>Backend, SQL Integration, Glossary of Terms, Documentation</td>
       <td align="center"></td>
       <td align="center"></td>
       <td align="center">✅</td>
       <td align="center">✅</td>
       <td align="center">✅</td>
-      <td align="center"></td>
+      <td align="center">✅</td>
     </tr>
     <tr>
       <td align="center">
         <strong>Marcelino, Princess Camille</strong>
       </td>
-      <td>Backend, SQL Integration, Glossary of Terms</td>
+      <td>Backend, SQL Integration, Glossary of Terms, Documentation</td>
       <td align="center"></td>
       <td align="center"></td>
       <td align="center">✅</td>
       <td align="center">✅</td>
       <td align="center">✅</td>
-      <td align="center"></td>
+      <td align="center">✅</td>
     </tr>
     <tr>
       <td align="center">
