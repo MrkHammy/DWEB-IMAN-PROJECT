@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="DWEB PROJECT/IMGS/LOGO/logo.png" alt="Fox Lab Logo" width="120">
+  <img src="IMGS/LOGO/logo.png" alt="Fox Lab Logo" width="120">
 </p>
 
-<h1 align="center">Fox Lab</h1>
+<h1 align="center">🦊 Fox Lab</h1>
 <p align="center">
   <strong>Cybersecurity Awareness & Training Platform</strong>
 </p>
@@ -48,15 +48,15 @@
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src="DWEB PROJECT/IMGS/platform_features_imgs/phishing.png" alt="Phishing Simulator" width="280"><br>
+      <img src="IMGS/platform_features_imgs/phishing.png" alt="Phishing Simulator" width="280"><br>
       <strong>Phishing Simulator</strong>
     </td>
     <td align="center" width="33%">
-      <img src="DWEB PROJECT/IMGS/platform_features_imgs/how strong is ur password.png" alt="Password Tester" width="280"><br>
+      <img src="IMGS/platform_features_imgs/how strong is ur password.png" alt="Password Tester" width="280"><br>
       <strong>Password Tester</strong>
     </td>
     <td align="center" width="33%">
-      <img src="DWEB PROJECT/IMGS/platform_features_imgs/online compiler.png" alt="Online Compiler" width="280"><br>
+      <img src="IMGS/platform_features_imgs/online compiler.png" alt="Online Compiler" width="280"><br>
       <strong>Online Code Compiler</strong>
     </td>
   </tr>
@@ -182,37 +182,37 @@ DWEB PROJECT/
       <td align="center">
         <strong>Bautista, Mark Anthony</strong>
       </td>
-      <td>Wireframe, GUI, Documentation, SQL</td>
+      <td>Wireframe, GUI, Documentation</td>
       <td align="center">✅</td>
       <td align="center">✅</td>
       <td align="center"></td>
       <td align="center"></td>
-      <td align="center">✅</td>
+      <td align="center"></td>
       <td align="center">✅</td>
     </tr>
     <tr>
       <td align="center">
         <strong>Roque, Daryl John Clark</strong>
       </td>
-      <td>Backend, SQL Integration, Glossary of Terms, Documentation</td>
+      <td>Backend, SQL Integration, Glossary of Terms</td>
       <td align="center"></td>
       <td align="center"></td>
       <td align="center">✅</td>
       <td align="center">✅</td>
       <td align="center">✅</td>
-      <td align="center">✅</td>
+      <td align="center"></td>
     </tr>
     <tr>
       <td align="center">
         <strong>Marcelino, Princess Camille</strong>
       </td>
-      <td>Backend, SQL Integration, Glossary of Terms, Documentation</td>
+      <td>Backend, SQL Integration, Glossary of Terms</td>
       <td align="center"></td>
       <td align="center"></td>
       <td align="center">✅</td>
       <td align="center">✅</td>
       <td align="center">✅</td>
-      <td align="center">✅</td>
+      <td align="center"></td>
     </tr>
     <tr>
       <td align="center">
