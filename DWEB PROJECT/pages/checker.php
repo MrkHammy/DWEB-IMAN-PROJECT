@@ -1,6 +1,6 @@
 <?php
 /**
- * Fox Lab – Password Security Tester
+ * Fox Lab â€“ Password Security Tester
  * Real-time JS strength meter + backend logging (requires login)
  */
 require_once __DIR__ . '/../config/db.php';
@@ -21,7 +21,7 @@ if (!$user) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'log_strength') {
     header('Content-Type: application/json');
     
-    $stmt = $pdo->prepare("INSERT INTO security_logs (strength_level, char_count, has_uppercase, has_lowercase, has_numbers, has_symbols, is_compromised, ip_address) VALUES (:sl, :cc, :hu, :hl, :hn, :hs, :ic, :ip)");
+    $stmt = $pdo->prepare("INSERT INTO pw_logs (strength_level, char_count, has_uppercase, has_lowercase, has_numbers, has_symbols, is_compromised, ip_address) VALUES (:sl, :cc, :hu, :hl, :hn, :hs, :ic, :ip)");
     $stmt->execute([
         ':sl' => $_POST['strength_level'] ?? 'Unknown',
         ':cc' => (int)($_POST['char_count'] ?? 0),

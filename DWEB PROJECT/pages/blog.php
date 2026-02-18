@@ -8,6 +8,50 @@ require_once __DIR__ . '/../config/db.php';
 $pageTitle = 'Blogs';
 $pdo = getDBConnection();
 
+/**
+ * Auto-link glossary terms found in blog HTML content.
+ * Wraps the first occurrence of each matching term with an <a> link to its glossary page.
+ * Skips text already inside <a> tags. Matches longest terms first to avoid partial matches.
+ */
+function linkGlossaryTerms($html, $pdo) {
+    $terms = $pdo->query("SELECT id, title FROM terms ORDER BY CHAR_LENGTH(title) DESC")->fetchAll();
+
+    // Split HTML into tags and text nodes
+    $parts  = preg_split('/(<[^>]+>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $result = [];
+    $linked = [];
+    $insideAnchor = 0;
+
+    foreach ($parts as $part) {
+        // Track HTML tags – skip content inside <a> ... </a>
+        if (preg_match('/^</', $part)) {
+            if (preg_match('/^<a[\s>]/i', $part))  $insideAnchor++;
+            if (preg_match('/^<\/a>/i', $part))     $insideAnchor = max(0, $insideAnchor - 1);
+            $result[] = $part;
+            continue;
+        }
+
+        if ($insideAnchor > 0) { $result[] = $part; continue; }
+
+        // Replace first occurrence of each unlinked term in this text node
+        foreach ($terms as $t) {
+            if (isset($linked[$t['id']])) continue;
+            $escaped = preg_quote($t['title'], '/');
+            if (preg_match('/\b' . $escaped . '\b/iu', $part)) {
+                $part = preg_replace(
+                    '/\b(' . $escaped . ')\b/iu',
+                    '<a href="terms.php?id=' . $t['id'] . '" class="glossary-link" title="View in Glossary">$1</a>',
+                    $part, 1
+                );
+                $linked[$t['id']] = true;
+            }
+        }
+        $result[] = $part;
+    }
+
+    return implode('', $result);
+}
+
 // --- Category filter ---
 $category = isset($_GET['category']) ? trim($_GET['category']) : '';
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
@@ -89,7 +133,7 @@ if ($viewSingle && $singlePost):
                 </div>
             </div>
             <div class="blog-detail-content">
-                <?php echo $singlePost['content']; ?>
+                <?php echo linkGlossaryTerms($singlePost['content'], $pdo); ?>
             </div>
 
             <?php if (!empty($singlePost['fb_link'])): ?>

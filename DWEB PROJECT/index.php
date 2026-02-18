@@ -1,6 +1,6 @@
 <?php
 /**
- * Fox Lab – Home Page (index.php)
+ * Fox Lab â€“ Home Page (index.php)
  * Hero, Platform Features, Statistics, Security Tips, Partners Banner
  */
 require_once __DIR__ . '/config/db.php';
@@ -13,7 +13,7 @@ $stmtStats = $pdo->query("SELECT stat_label, stat_value, stat_icon FROM stats OR
 $stats = $stmtStats->fetchAll();
 
 // Fetch security tips
-$stmtTips = $pdo->query("SELECT title, description, icon FROM security_tips WHERE is_active = 1 ORDER BY display_order ASC LIMIT 5");
+$stmtTips = $pdo->query("SELECT title, description, icon FROM tips WHERE is_active = 1 ORDER BY display_order ASC LIMIT 5");
 $tips = $stmtTips->fetchAll();
 
 // Fetch partners

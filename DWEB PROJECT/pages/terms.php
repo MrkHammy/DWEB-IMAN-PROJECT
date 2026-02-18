@@ -1,6 +1,6 @@
 <?php
 /**
- * Fox Lab – Terminologies / Glossary
+ * Fox Lab â€“ Terminologies / Glossary
  * Sidebar filtering by category + A-Z index, detail view
  * AJAX search suggestions endpoint
  */
@@ -22,15 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
     // Check if already bookmarked
-    $stmtCheck = $pdo->prepare("SELECT id FROM user_bookmarks WHERE user_id = :uid AND term_id = :tid");
+    $stmtCheck = $pdo->prepare("SELECT id FROM bookmarks WHERE user_id = :uid AND term_id = :tid");
     $stmtCheck->execute([':uid' => $userId, ':tid' => $termId]);
     if ($stmtCheck->fetch()) {
         // Remove bookmark
-        $pdo->prepare("DELETE FROM user_bookmarks WHERE user_id = :uid AND term_id = :tid")->execute([':uid' => $userId, ':tid' => $termId]);
+        $pdo->prepare("DELETE FROM bookmarks WHERE user_id = :uid AND term_id = :tid")->execute([':uid' => $userId, ':tid' => $termId]);
         echo json_encode(['bookmarked' => false]);
     } else {
         // Add bookmark
-        $pdo->prepare("INSERT INTO user_bookmarks (user_id, term_id) VALUES (:uid, :tid)")->execute([':uid' => $userId, ':tid' => $termId]);
+        $pdo->prepare("INSERT INTO bookmarks (user_id, term_id) VALUES (:uid, :tid)")->execute([':uid' => $userId, ':tid' => $termId]);
         echo json_encode(['bookmarked' => true]);
     }
     exit;
@@ -66,7 +66,7 @@ $showBookmarks = isset($_GET['bookmarks']) && $_GET['bookmarks'] === '1';
 $userBookmarkIds = [];
 $bookmarkCount = 0;
 if (isLoggedIn()) {
-    $stmtBm = $pdo->prepare("SELECT term_id FROM user_bookmarks WHERE user_id = :uid");
+    $stmtBm = $pdo->prepare("SELECT term_id FROM bookmarks WHERE user_id = :uid");
     $stmtBm->execute([':uid' => (int)$_SESSION['user_id']]);
     $userBookmarkIds = array_column($stmtBm->fetchAll(), 'term_id');
     $bookmarkCount = count($userBookmarkIds);
@@ -133,22 +133,30 @@ if ($viewTermId > 0) {
 if ($selectedTerm) {
     $pageTitle = $selectedTerm['title'];
     
-    $stmtRelated = $pdo->prepare("SELECT * FROM term_related WHERE term_id = :tid ORDER BY id ASC");
-    $stmtRelated->execute([':tid' => $selectedTerm['id']]);
+    $stmtRelated = $pdo->prepare("
+        SELECT t.id, t.title FROM terms t
+        WHERE t.id IN (
+            SELECT linked_id FROM term_links WHERE term_id = :tid1
+            UNION
+            SELECT term_id FROM term_links WHERE linked_id = :tid2
+        )
+        ORDER BY t.title ASC
+    ");
+    $stmtRelated->execute([':tid1' => $selectedTerm['id'], ':tid2' => $selectedTerm['id']]);
     $relatedTerms = $stmtRelated->fetchAll();
     
-    $stmtThreats = $pdo->prepare("SELECT * FROM term_threats WHERE term_id = :tid ORDER BY id ASC");
+    $stmtThreats = $pdo->prepare("SELECT * FROM threats WHERE term_id = :tid ORDER BY id ASC");
     $stmtThreats->execute([':tid' => $selectedTerm['id']]);
     $threats = $stmtThreats->fetchAll();
     
     // Per-term learning resources
     $termResources = [];
     try {
-        $stmtRes = $pdo->prepare("SELECT * FROM term_resources WHERE term_id = :tid ORDER BY id ASC");
+        $stmtRes = $pdo->prepare("SELECT * FROM resources WHERE term_id = :tid ORDER BY id ASC");
         $stmtRes->execute([':tid' => $selectedTerm['id']]);
         $termResources = $stmtRes->fetchAll();
     } catch (PDOException $e) {
-        // table may not exist yet – fall back to empty
+        // table may not exist yet â€“ fall back to empty
         $termResources = [];
     }
 }
@@ -286,8 +294,8 @@ include __DIR__ . '/../includes/header.php';
                 <h3><i class="fas fa-link"></i> Related Terms</h3>
                 <ul class="related-list">
                     <?php foreach ($relatedTerms as $rt): ?>
-                    <li onclick="window.location='<?php echo e($rt['related_url']); ?>'">
-                        <?php echo e($rt['related_title']); ?>
+                    <li onclick="window.location='terms.php?id=<?php echo $rt['id']; ?>'">
+                        <?php echo e($rt['title']); ?>
                         <i class="fas fa-arrow-right"></i>
                     </li>
                     <?php endforeach; ?>

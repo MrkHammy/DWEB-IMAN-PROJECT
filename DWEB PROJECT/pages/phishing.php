@@ -1,6 +1,6 @@
 <?php
 /**
- * Fox Lab – Phishing Email Simulator
+ * Fox Lab â€“ Phishing Email Simulator
  * Interactive phishing detection training (requires login)
  */
 require_once __DIR__ . '/../config/db.php';
@@ -12,7 +12,7 @@ $pdo = getDBConnection();
 requireLogin();
 $user = currentUser();
 if (!$user) {
-    // Session references a user that no longer exists in the DB – force re-login
+    // Session references a user that no longer exists in the DB â€“ force re-login
     session_destroy();
     header('Location: login.php');
     exit;
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $userResponse = $_POST['user_response'] ?? '';
     
     // Get scenario info
-    $stmtCheck = $pdo->prepare("SELECT is_phishing FROM phishing_scenarios WHERE id = :id");
+    $stmtCheck = $pdo->prepare("SELECT is_phishing FROM scenarios WHERE id = :id");
     $stmtCheck->execute([':id' => $scenarioId]);
     $scenario = $stmtCheck->fetch();
     
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     
     // Save progress
-    $stmtSave = $pdo->prepare("INSERT INTO user_phishing_progress (user_id, scenario_id, user_response, is_correct) VALUES (:uid, :sid, :resp, :correct)");
+    $stmtSave = $pdo->prepare("INSERT INTO quiz_results (user_id, scenario_id, user_response, is_correct) VALUES (:uid, :sid, :resp, :correct)");
     $stmtSave->execute([
         ':uid' => $_SESSION['user_id'],
         ':sid' => $scenarioId,
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     ]);
     
     // Get red flags for this scenario
-    $stmtRF = $pdo->prepare("SELECT flag_title, flag_description, flag_icon FROM phishing_red_flags WHERE scenario_id = :sid");
+    $stmtRF = $pdo->prepare("SELECT flag_title, flag_description, flag_icon FROM red_flags WHERE scenario_id = :sid");
     $stmtRF->execute([':sid' => $scenarioId]);
     $flags = $stmtRF->fetchAll();
     
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmtCorrect = $pdo->prepare("SELECT 
         SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_count,
         SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) as incorrect_count
-        FROM user_phishing_progress WHERE user_id = :uid");
+        FROM quiz_results WHERE user_id = :uid");
     $stmtCorrect->execute([':uid' => $_SESSION['user_id']]);
     $counts = $stmtCorrect->fetch();
     
@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 }
 
 // Get all scenarios
-$stmtScenarios = $pdo->query("SELECT * FROM phishing_scenarios ORDER BY id ASC");
+$stmtScenarios = $pdo->query("SELECT * FROM scenarios ORDER BY id ASC");
 $allScenarios = $stmtScenarios->fetchAll();
 
-// ── Session-based quiz: pick 4 random scenarios per session ──
+// â”€â”€ Session-based quiz: pick 4 random scenarios per session â”€â”€
 if (!isset($_SESSION['phishing_quiz_ids']) || isset($_GET['restart'])) {
     // Shuffle and pick 4 (or fewer if not enough scenarios)
     $ids = array_column($allScenarios, 'id');
@@ -115,7 +115,7 @@ $currentScenario = $scenarios[$currentIndex] ?? null;
 // Get indicators for current scenario
 $indicators = [];
 if ($currentScenario) {
-    $stmtInd = $pdo->prepare("SELECT * FROM phishing_indicators WHERE scenario_id = :sid ORDER BY id ASC");
+    $stmtInd = $pdo->prepare("SELECT * FROM indicators WHERE scenario_id = :sid ORDER BY id ASC");
     $stmtInd->execute([':sid' => $currentScenario['id']]);
     $indicators = $stmtInd->fetchAll();
 }
@@ -124,7 +124,7 @@ if ($currentScenario) {
 $stmtUserStats = $pdo->prepare("SELECT 
     SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_count,
     SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) as incorrect_count
-    FROM user_phishing_progress WHERE user_id = :uid");
+    FROM quiz_results WHERE user_id = :uid");
 $stmtUserStats->execute([':uid' => $_SESSION['user_id']]);
 $userStats = $stmtUserStats->fetch();
 $sessionCorrect = (int)($userStats['correct_count'] ?? 0);
@@ -138,7 +138,7 @@ include __DIR__ . '/../includes/header.php';
 <section style="padding:60px 0;text-align:center;">
     <div class="container">
         <h2>No phishing scenarios available.</h2>
-        <p>Please check the database for phishing_scenarios entries.</p>
+        <p>Please check the database for scenarios entries.</p>
     </div>
 </section>
 <?php else: ?>

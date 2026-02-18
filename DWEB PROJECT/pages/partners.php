@@ -1,6 +1,6 @@
 <?php
 /**
- * Fox Lab – Partner Organizations
+ * Fox Lab â€“ Partner Organizations
  * Grid of partner cards + partnership benefits
  */
 require_once __DIR__ . '/../config/db.php';
@@ -14,13 +14,13 @@ $partners = $stmtPartners->fetchAll();
 
 $partnerFeatures = [];
 foreach ($partners as $p) {
-    $stmtFeatures = $pdo->prepare("SELECT feature, icon FROM partner_features WHERE partner_id = :pid ORDER BY id ASC");
+    $stmtFeatures = $pdo->prepare("SELECT feature, icon FROM org_features WHERE partner_id = :pid ORDER BY id ASC");
     $stmtFeatures->execute([':pid' => $p['id']]);
     $partnerFeatures[$p['id']] = $stmtFeatures->fetchAll();
 }
 
 // Fetch benefits
-$stmtBenefits = $pdo->query("SELECT * FROM partnership_benefits ORDER BY display_order ASC");
+$stmtBenefits = $pdo->query("SELECT * FROM benefits ORDER BY display_order ASC");
 $benefits = $stmtBenefits->fetchAll();
 
 include __DIR__ . '/../includes/header.php';
