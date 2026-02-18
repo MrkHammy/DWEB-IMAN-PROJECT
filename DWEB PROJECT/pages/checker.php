@@ -21,8 +21,9 @@ if (!$user) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'log_strength') {
     header('Content-Type: application/json');
     
-    $stmt = $pdo->prepare("INSERT INTO pw_logs (strength_level, char_count, has_uppercase, has_lowercase, has_numbers, has_symbols, is_compromised, ip_address) VALUES (:sl, :cc, :hu, :hl, :hn, :hs, :ic, :ip)");
+    $stmt = $pdo->prepare("INSERT INTO pw_logs (user_id, strength_level, char_count, has_uppercase, has_lowercase, has_numbers, has_symbols, is_compromised, ip_address) VALUES (:uid, :sl, :cc, :hu, :hl, :hn, :hs, :ic, :ip)");
     $stmt->execute([
+        ':uid' => $user['id'],
         ':sl' => $_POST['strength_level'] ?? 'Unknown',
         ':cc' => (int)($_POST['char_count'] ?? 0),
         ':hu' => (int)($_POST['has_uppercase'] ?? 0),
@@ -186,5 +187,7 @@ include __DIR__ . '/../includes/header.php';
         </section>
     </div>
 </section>
+
+<?php $excludePage = 'checker'; include __DIR__ . '/../includes/recommended.php'; ?>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

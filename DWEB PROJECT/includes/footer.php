@@ -17,17 +17,17 @@ $homePath = $isSubPage ? '../index.php' : 'index.php';
                     <p>Empowering organizations with cybersecurity education and training solutions.</p>
                 </div>
                 <div class="footer-col">
-                    <h4>Platform</h4>
+                    <h4>Fox Simulations</h4>
                     <a href="<?php echo $pagesPath; ?>phishing.php">Phishing Simulations</a>
                     <a href="<?php echo $pagesPath; ?>checker.php">Password Tester</a>
-                    <a href="<?php echo $pagesPath; ?>compiler.php">Code Online</a>
-                    <a href="<?php echo $pagesPath; ?>terms.php">Security Glossary</a>
                 </div>
                 <div class="footer-col">
                     <h4>More</h4>
-                    <a href="<?php echo $pagesPath; ?>blog.php">Blog</a>
-                    <a href="<?php echo $pagesPath; ?>partners.php">Organizations</a>
-                    <a href="<?php echo $pagesPath; ?>terms.php">Terminologies</a>
+                    <a href="<?php echo $pagesPath; ?>compiler.php">Fox Code &amp; Tutorials</a>
+                    <a href="<?php echo $pagesPath; ?>tips.php">Security Tips</a>
+                    <a href="<?php echo $pagesPath; ?>terms.php">Glossary</a>
+                    <a href="<?php echo $pagesPath; ?>blog.php">Fox Blogs</a>
+                    <a href="<?php echo $pagesPath; ?>partners.php">Who The Fox?</a>
                 </div>
 
                 <div class="footer-col">
@@ -49,6 +49,34 @@ $homePath = $isSubPage ? '../index.php' : 'index.php';
 
     <!-- Main JS -->
     <script src="<?php echo $basePath; ?>assets/js/main.js"></script>
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+    (function() {
+        const toggle = document.getElementById('darkModeToggle');
+        if (!toggle) return;
+
+        // Sync checkbox with current state
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        toggle.checked = isDark;
+
+        toggle.addEventListener('change', function() {
+            const checked = this.checked;
+            // Small delay lets the toggle CSS animation start before
+            // the massive style recalculation from CSS-variable changes
+            setTimeout(function() {
+                if (checked) {
+                    document.documentElement.classList.add('dark-mode');
+                    localStorage.setItem('foxlab-dark-mode', 'true');
+                } else {
+                    document.documentElement.classList.remove('dark-mode');
+                    localStorage.setItem('foxlab-dark-mode', 'false');
+                }
+            }, 80);
+        });
+    })();
+    </script>
+
     <?php if (isset($extraScripts)): ?>
         <?php foreach ($extraScripts as $script): ?>
             <script src="<?php echo $basePath; ?>assets/js/<?php echo $script; ?>"></script>

@@ -1,13 +1,28 @@
--- ============================================================
+﻿-- ============================================================
 -- Fox Lab â€“ Cybersecurity Awareness & Training Platform
 -- Complete Database Schema + Data
+-- Tables: 21 | Engine: InnoDB
+-- ============================================================
+--
+-- RELATIONSHIP MAP (21 tables)
+-- =============================
+-- users ---+--- blogs ----------- categories
+--          |--- projects -------- languages --+-- quick_refs
+--          |--- pw_logs                       +-- tutorials
+--          |--- quiz_results --- scenarios --+-- red_flags
+--          |--- bookmarks ------ terms --+   +-- indicators
+--          +--- enrollments ---- courses  +-- term_links
+--                                         +-- threats
+--                                         +-- resources
+--          partners --- org_features
+--
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS foxlab_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE foxlab_db;
 
 -- ----------------------------------------------------------
--- 0. Users (Authentication)
+-- 1. Users (Core Authentication)
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,46 +41,7 @@ INSERT INTO users (full_name, email, password, role) VALUES
 ('Admin User', 'admin@foxlab.com', '$2y$10$42j5FdVU8yLRIA./Z6DHUudyYY/X3GQzz4sRVbmEuzi1J.eSeEc4G', 'admin');
 
 -- ----------------------------------------------------------
--- 1. Statistics (Home page dynamic counters)
--- ----------------------------------------------------------
-CREATE TABLE IF NOT EXISTS stats (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    stat_label  VARCHAR(100) NOT NULL,
-    stat_value  VARCHAR(50)  NOT NULL,
-    stat_icon   VARCHAR(100) DEFAULT NULL,
-    display_order INT DEFAULT 0,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
-INSERT INTO stats (stat_label, stat_value, stat_icon, display_order) VALUES
-('Active Users', '1K+', 'fas fa-users', 1),
-('Organizations', '3+', 'fas fa-building', 2),
-('Success Rate', '95%', 'fas fa-chart-line', 3),
-('Support', '24/7', 'fas fa-headset', 4);
-
--- ----------------------------------------------------------
--- 2. Security Tips (Home page)
--- ----------------------------------------------------------
-CREATE TABLE IF NOT EXISTS tips (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    icon        VARCHAR(100) DEFAULT 'fas fa-shield-alt',
-    is_active   TINYINT(1) DEFAULT 1,
-    display_order INT DEFAULT 0,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
-INSERT INTO tips (title, description, icon, display_order) VALUES
-('Verify Sender Addresses', 'Always check the email sender\'s address carefully. Phishers often use addresses that look similar to legitimate ones.', 'fas fa-envelope-open-text', 1),
-('Think Before You Click', 'Hover over links to preview the URL before clicking. Be wary of shortened URLs or suspicious domains.', 'fas fa-mouse-pointer', 2),
-('Enable Two-Factor Authentication', 'Add an extra layer of security to your accounts with 2FA. This significantly reduces the risk of unauthorized access.', 'fas fa-lock', 3),
-('Keep Software Updated', 'Regularly update your operating system, browser, and applications to patch known security vulnerabilities.', 'fas fa-sync-alt', 4),
-('Use Strong Unique Passwords', 'Create complex passwords for each account. Consider using a password manager to keep track of them securely.', 'fas fa-key', 5);
-
--- ----------------------------------------------------------
--- 3. Blogs
+-- 2. Blogs
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS blogs (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -310,7 +286,7 @@ INSERT INTO blogs (title, excerpt, content, category, author, author_org, image_
  'Education', 'Fox Lab', 'Fox Lab', 'IMGS/blog/career-paths.svg', 9, 0, '2025-12-10');
 
 -- ----------------------------------------------------------
--- 4. Projects (Online Compiler)
+-- 3. Projects (Online Compiler)
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS projects (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -334,7 +310,7 @@ INSERT INTO projects (filename, language, code, is_recent) VALUES
 ('DataParser.py', 'python', '# Data Parser\nimport json\n\ndata = {\"name\": \"Fox Lab\", \"type\": \"Cybersecurity\", \"tools\": [\"Python\", \"Java\"]}\n\nprint(\"Platform:\", data[\"name\"])\nprint(\"Type:\", data[\"type\"])\nprint(\"Tools:\", \", \".join(data[\"tools\"]))\nprint(\"JSON:\", json.dumps(data, indent=2))', 1);
 
 -- ----------------------------------------------------------
--- 5. Security Logs (Password Checker)
+-- 4. Password Security Logs
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS pw_logs (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -352,7 +328,7 @@ CREATE TABLE IF NOT EXISTS pw_logs (
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------
--- 6. Phishing Scenarios
+-- 5. Phishing Simulation
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS scenarios (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -607,19 +583,7 @@ CREATE TABLE IF NOT EXISTS quiz_results (
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------
--- 6b. User Term Bookmarks
--- ----------------------------------------------------------
-CREATE TABLE IF NOT EXISTS bookmarks (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    user_id     INT NOT NULL,
-    term_id     INT NOT NULL,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_bookmark (user_id, term_id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ----------------------------------------------------------
--- 7. Terminologies / Glossary
+-- 6. Glossary Terms
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS terms (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -659,7 +623,7 @@ CREATE TABLE IF NOT EXISTS resources (
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------
--- 7a. Glossary Terms (45 terms, A-Z coverage)
+-- 6a. Term Data (85 terms, A-Z)
 -- ----------------------------------------------------------
 INSERT INTO terms (id, title, pronunciation, category, subcategory, definition, usage_context) VALUES
 
@@ -1040,7 +1004,7 @@ INSERT INTO terms (id, title, pronunciation, category, subcategory, definition, 
 
 
 -- ----------------------------------------------------------
--- 7b. Related Terms (cross-references)
+-- 6b. Related Terms (cross-references)
 -- ----------------------------------------------------------
 INSERT INTO term_links (term_id, linked_id) VALUES
 -- Access Control
@@ -1510,7 +1474,7 @@ INSERT INTO term_links (term_id, linked_id) VALUES
 
 
 -- ----------------------------------------------------------
--- 7c. Term Threats
+-- 6c. Term Threats
 -- ----------------------------------------------------------
 INSERT INTO threats (term_id, threat_title, threat_desc) VALUES
 -- API Security
@@ -1555,7 +1519,7 @@ INSERT INTO threats (term_id, threat_title, threat_desc) VALUES
 
 
 -- ----------------------------------------------------------
--- 7d. Per-Term Learning Resources
+-- 6d. Per-Term Learning Resources
 -- ----------------------------------------------------------
 INSERT INTO resources (term_id, resource_title, resource_url, resource_icon) VALUES
 -- Access Control
@@ -1887,7 +1851,20 @@ INSERT INTO resources (term_id, resource_title, resource_url, resource_icon) VAL
 (85, 'EFF Password Manager Guide', 'https://ssd.eff.org/module/creating-strong-passwords', 'fas fa-book');
 
 -- ----------------------------------------------------------
--- 8. Partner Organizations
+-- 7. Glossary Bookmarks
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS bookmarks (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT NOT NULL,
+    term_id     INT NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_bookmark (user_id, term_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (term_id) REFERENCES terms(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ----------------------------------------------------------
+-- 8. Partners & Organizations
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS partners (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -1926,24 +1903,7 @@ INSERT INTO org_features (partner_id, feature, icon) VALUES
 (3, 'Regular Workshops & Events', 'fas fa-calendar-alt');
 
 -- ----------------------------------------------------------
--- 9. Partnership Benefits (for partners page)
--- ----------------------------------------------------------
-CREATE TABLE IF NOT EXISTS benefits (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL,
-    description VARCHAR(500) DEFAULT NULL,
-    icon        VARCHAR(100) DEFAULT 'fas fa-handshake',
-    display_order INT DEFAULT 0
-) ENGINE=InnoDB;
-
-INSERT INTO benefits (title, description, icon, display_order) VALUES
-('Collaboration', 'Joint projects and initiatives', 'fas fa-comments', 1),
-('Learning', 'Shared knowledge and training', 'fas fa-graduation-cap', 2),
-('Networking', 'Professional connections', 'fas fa-project-diagram', 3),
-('Innovation', 'Technology advancement', 'fas fa-rocket', 4);
-
--- ----------------------------------------------------------
--- 10. Python Courses (Compiler sidebar)
+-- 9. Courses
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS courses (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -1955,7 +1915,7 @@ CREATE TABLE IF NOT EXISTS courses (
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------
--- 10b. User-Course Enrollment (Junction Table)
+-- 9a. Enrollments (users <-> courses)
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS enrollments (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -1974,13 +1934,7 @@ INSERT INTO courses (title, language, image_url) VALUES
 ('Web Development with Python', 'python', NULL);
 
 -- ----------------------------------------------------------
--- 11. Category counts view helper
--- ----------------------------------------------------------
-CREATE OR REPLACE VIEW term_cat_counts AS
-SELECT category, COUNT(*) as term_count FROM terms GROUP BY category;
-
--- ----------------------------------------------------------
--- 12. Blog Categories (normalized lookup)
+-- 10. Blog Categories (lookup)
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS categories (
     id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -1997,44 +1951,7 @@ INSERT INTO categories (name, display_order) VALUES
 ('Career', 6);
 
 -- ----------------------------------------------------------
--- 13. Weak / Compromised Passwords
--- ----------------------------------------------------------
-CREATE TABLE IF NOT EXISTS weak_passwords (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    password VARCHAR(100) NOT NULL UNIQUE
-) ENGINE=InnoDB;
-
-INSERT INTO weak_passwords (password) VALUES
-('password'),('123456'),('12345678'),('123456789'),('1234567890'),
-('qwerty'),('abc123'),('password1'),('password123'),('admin'),
-('letmein'),('welcome'),('monkey'),('dragon'),('master'),
-('login'),('princess'),('football'),('shadow'),('sunshine'),
-('trustno1'),('iloveyou'),('batman'),('access'),('hello'),
-('charlie'),('donald'),('123123'),('654321'),('666666'),
-('111111'),('000000'),('121212'),('qwerty123'),('password1!'),
-('aa123456'),('qwertyuiop'),('1q2w3e4r'),('1qaz2wsx'),
-('zaq12wsx'),('pass@123'),('p@ssw0rd'),('p@ssword'),('passw0rd'),
-('test123'),('test1234'),('changeme'),('secret'),('root'),
-('toor'),('pa$$word'),('pa$$w0rd'),('guest'),('default'),
-('qazwsx'),('asdfgh'),('zxcvbn'),('1234qwer'),('qwer1234'),
-('asdf1234'),('!@#$%^&*'),('12345'),('123456a'),('a123456'),
-('michael'),('jennifer'),('jordan'),('harley'),('robert'),
-('thomas'),('hockey'),('ranger'),('daniel'),('starwars'),
-('klaster'),('george'),('computer'),('michelle'),('jessica'),
-('pepper'),('freedom'),('thunder'),('ginger'),('hammer'),
-('silver'),('summer'),('internet'),('whatever'),('baseball'),
-('soccer'),('killer'),('hunter'),('andrew'),('tigger'),
-('buster'),('joshua'),('matrix'),('superman'),('samsung'),
-('pokemon'),('corvette'),('mercedes'),('chelsea'),('arsenal'),
-('password2024'),('password2025'),('password2026'),
-('spring2025'),('summer2025'),('winter2025'),('fall2025'),
-('spring2026'),('winter2026'),('jan2026'),('feb2026'),
-('admin123'),('admin1234'),('root123'),('user123'),('test'),
-('guest123'),('oracle'),('mysql'),('postgres'),('cisco'),
-('ubnt'),('alpine'),('vagrant'),('raspberry');
-
--- ----------------------------------------------------------
--- 14. Compiler Languages
+-- 11. Compiler Languages (lookup)
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS languages (
     id        INT AUTO_INCREMENT PRIMARY KEY,
@@ -2049,7 +1966,7 @@ INSERT INTO languages (slug, label, version, icon) VALUES
 ('java', 'Java 15', '15.0.2', 'fab fa-java');
 
 -- ----------------------------------------------------------
--- 15. Quick Reference Commands
+-- 12. Quick Reference Commands
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS quick_refs (
     id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -2076,7 +1993,7 @@ INSERT INTO quick_refs (lang_slug, command, description, display_order) VALUES
 ('java', 'if (cond) {}', 'Conditional', 6);
 
 -- ----------------------------------------------------------
--- 16. Tutorials (Compiler lessons)
+-- 13. Tutorials
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS tutorials (
     id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -2139,7 +2056,7 @@ INSERT INTO tutorials (lang_slug, title, description, code, display_order) VALUE
  '// Lesson 8: Exception Handling\n\npublic class Main {\n    public static void main(String[] args) {\n        // Basic try/catch\n        try {\n            int result = 10 / 0;\n        } catch (ArithmeticException e) {\n            System.out.println(\"Error: Cannot divide by zero!\");\n        }\n        \n        // Handling multiple exceptions\n        System.out.println(\"\\nConverting values:\");\n        String[] values = {\"42\", \"hello\", \"99\"};\n        \n        for (String val : values) {\n            try {\n                int num = Integer.parseInt(val);\n                System.out.println(\"  ''\" + val + \"'' → \" + num);\n            } catch (NumberFormatException e) {\n                System.out.println(\"  ''\" + val + \"'' → Cannot convert!\");\n            }\n        }\n        \n        // Try/catch/finally\n        System.out.println(\"\\nFull pattern:\");\n        try {\n            int[] numbers = {1, 2, 3};\n            System.out.println(\"  Third element: \" + numbers[2]);\n            System.out.println(\"  Fourth element: \" + numbers[3]);\n        } catch (ArrayIndexOutOfBoundsException e) {\n            System.out.println(\"  Error: Index out of range!\");\n        } finally {\n            System.out.println(\"  This always runs (cleanup code goes here)\");\n        }\n    }\n}', 8);
 
 -- ----------------------------------------------------------
--- 17. Foreign Key Constraints (deferred – referenced tables created above)
+-- 14. Deferred Foreign Key Constraints ( – referenced tables created above)
 -- ----------------------------------------------------------
 ALTER TABLE blogs ADD CONSTRAINT fk_blogs_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL;
 ALTER TABLE projects ADD CONSTRAINT fk_projects_lang FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE SET NULL;

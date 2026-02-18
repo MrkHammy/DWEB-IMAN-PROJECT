@@ -324,55 +324,6 @@ include __DIR__ . '/../includes/header.php';
                 <?php endif; ?>
             </div>
 
-            <!-- Recommended Pages -->
-            <div class="recommended-pages-card">
-                <h3><i class="fas fa-compass"></i> Explore Fox Lab</h3>
-                <a href="phishing.php" class="recommended-page-item">
-                    <div class="rec-page-icon" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
-                        <i class="fas fa-fish"></i>
-                    </div>
-                    <div class="rec-page-info">
-                        <span class="rec-page-title">Phishing Simulator</span>
-                        <span class="rec-page-desc">Test your ability to spot phishing emails</span>
-                    </div>
-                </a>
-                <a href="checker.php" class="recommended-page-item">
-                    <div class="rec-page-icon" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <div class="rec-page-info">
-                        <span class="rec-page-title">Password Tester</span>
-                        <span class="rec-page-desc">Check how strong your passwords are</span>
-                    </div>
-                </a>
-                <a href="compiler.php" class="recommended-page-item">
-                    <div class="rec-page-icon" style="background: linear-gradient(135deg, #0074D9, #005fa3);">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="rec-page-info">
-                        <span class="rec-page-title">Code Online</span>
-                        <span class="rec-page-desc">Practice Python & Java with tutorials</span>
-                    </div>
-                </a>
-                <a href="blog.php" class="recommended-page-item">
-                    <div class="rec-page-icon" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);">
-                        <i class="fas fa-newspaper"></i>
-                    </div>
-                    <div class="rec-page-info">
-                        <span class="rec-page-title">Security Blogs</span>
-                        <span class="rec-page-desc">Read the latest cybersecurity articles</span>
-                    </div>
-                </a>
-                <a href="partners.php" class="recommended-page-item">
-                    <div class="rec-page-icon" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <div class="rec-page-info">
-                        <span class="rec-page-title">Organizations</span>
-                        <span class="rec-page-desc">Our partner organizations & communities</span>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
     <?php else: ?>

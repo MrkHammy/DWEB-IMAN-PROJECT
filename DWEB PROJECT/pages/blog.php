@@ -271,4 +271,6 @@ if ($viewSingle && $singlePost):
 
 <?php endif; ?>
 
+<?php $excludePage = 'blog'; include __DIR__ . '/../includes/recommended.php'; ?>
+
 <?php include __DIR__ . '/../includes/footer.php'; ?>

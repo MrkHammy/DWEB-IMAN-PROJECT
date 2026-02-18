@@ -305,4 +305,6 @@ include __DIR__ . '/../includes/header.php';
 
 <?php endif; ?>
 
+<?php $excludePage = 'phishing'; include __DIR__ . '/../includes/recommended.php'; ?>
+
 <?php include __DIR__ . '/../includes/footer.php'; ?>

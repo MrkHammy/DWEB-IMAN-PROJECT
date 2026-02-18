@@ -5,7 +5,7 @@
  */
 require_once __DIR__ . '/../config/db.php';
 
-$pageTitle = 'Code Online';
+$pageTitle = 'Fox Code – Code & Tutorials';
 $pdo = getDBConnection();
 
 // Require login
@@ -284,5 +284,7 @@ include __DIR__ . '/../includes/header.php';
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="id" id="deleteId" value="">
 </form>
+
+<?php $excludePage = 'compiler'; include __DIR__ . '/../includes/recommended.php'; ?>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

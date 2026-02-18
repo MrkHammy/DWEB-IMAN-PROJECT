@@ -143,4 +143,38 @@ document.addEventListener('DOMContentLoaded', () => {
             userDropdown.classList.remove('show');
         });
     }
+
+    // ===== Nav Dropdown Handler (reusable) =====
+    function initNavDropdown(dropdownId, toggleId) {
+        const dropdown = document.getElementById(dropdownId);
+        const toggle = document.getElementById(toggleId);
+        if (!dropdown || !toggle) return;
+
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Close other open dropdowns
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+                if (d.id !== dropdownId) {
+                    d.classList.remove('open');
+                    const t = d.querySelector('.nav-dropdown-toggle');
+                    if (t) t.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            const isOpen = dropdown.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#' + dropdownId)) {
+                dropdown.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    initNavDropdown('securitySimDropdown', 'securitySimToggle');
+    initNavDropdown('learnDropdown', 'learnToggle');
 });

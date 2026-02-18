@@ -8,13 +8,22 @@ require_once __DIR__ . '/config/db.php';
 $pageTitle = 'Home';
 $pdo = getDBConnection();
 
-// Fetch stats
-$stmtStats = $pdo->query("SELECT stat_label, stat_value, stat_icon FROM stats ORDER BY display_order ASC");
-$stats = $stmtStats->fetchAll();
+// Static stats (no DB table needed)
+$stats = [
+    ['stat_label' => 'Active Users',   'stat_value' => '1K+',  'stat_icon' => 'fas fa-users'],
+    ['stat_label' => 'Organizations',  'stat_value' => '3+',   'stat_icon' => 'fas fa-building'],
+    ['stat_label' => 'Success Rate',   'stat_value' => '95%',  'stat_icon' => 'fas fa-chart-line'],
+    ['stat_label' => 'Support',        'stat_value' => '24/7', 'stat_icon' => 'fas fa-headset'],
+];
 
-// Fetch security tips
-$stmtTips = $pdo->query("SELECT title, description, icon FROM tips WHERE is_active = 1 ORDER BY display_order ASC LIMIT 5");
-$tips = $stmtTips->fetchAll();
+// Static security tips (no DB table needed)
+$tips = [
+    ['title' => 'Verify Sender Addresses',        'description' => 'Always check the email sender\'s address carefully. Phishers often use addresses that look similar to legitimate ones.', 'icon' => 'fas fa-envelope-open-text'],
+    ['title' => 'Think Before You Click',          'description' => 'Hover over links to preview the URL before clicking. Be wary of shortened URLs or suspicious domains.', 'icon' => 'fas fa-mouse-pointer'],
+    ['title' => 'Enable Two-Factor Authentication','description' => 'Add an extra layer of security to your accounts with 2FA. This significantly reduces the risk of unauthorized access.', 'icon' => 'fas fa-lock'],
+    ['title' => 'Keep Software Updated',           'description' => 'Regularly update your operating system, browser, and applications to patch known security vulnerabilities.', 'icon' => 'fas fa-sync-alt'],
+    ['title' => 'Use Strong Unique Passwords',     'description' => 'Create complex passwords for each account. Consider using a password manager to keep track of them securely.', 'icon' => 'fas fa-key'],
+];
 
 // Fetch partners
 $stmtPartners = $pdo->query("SELECT name, logo_url FROM partners ORDER BY display_order ASC");
@@ -97,10 +106,10 @@ include __DIR__ . '/includes/header.php';
                 <div class="feature-card-body">
                     <div class="feature-icon">
                         <i class="fas fa-code"></i>
-                        <h3>Online Coding</h3>
+                        <h3>Fox Code</h3>
                     </div>
-                    <p>Accessible and free online compiler available to all!</p>
-                    <span class="learn-more">Learn More <i class="fas fa-arrow-right"></i></span>
+                    <p>Free online compiler with built-in Python &amp; Java tutorials!</p>
+                    <span class="learn-more">Start Coding <i class="fas fa-arrow-right"></i></span>
                 </div>
             </a>
         </div>
@@ -141,7 +150,7 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 <?php endforeach; ?>
                 <div class="tips-buttons">
-                    <a href="pages/terms.php" class="btn btn-primary">View All Tips</a>
+                    <a href="pages/tips.php" class="btn btn-primary">View All Tips</a>
                 </div>
             </div>
         </div>
@@ -164,7 +173,7 @@ include __DIR__ . '/includes/header.php';
             <?php endforeach; ?>
         </div>
         <div class="partners-banner-buttons">
-            <a href="pages/partners.php" class="btn btn-outline">View Organizations</a>
+            <a href="pages/partners.php" class="btn btn-outline">About Us</a>
             <a href="pages/blog.php" class="btn btn-primary">See Blogs</a>
         </div>
     </div>
