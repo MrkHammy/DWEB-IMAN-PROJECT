@@ -86,8 +86,8 @@ $stmtPosts->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmtPosts->execute();
 $posts = $stmtPosts->fetchAll();
 
-// --- Get categories for filter ---
-$stmtCats = $pdo->query("SELECT DISTINCT category FROM blogs ORDER BY category ASC");
+// --- Get categories for filter (from normalized table) ---
+$stmtCats = $pdo->query("SELECT name FROM categories ORDER BY display_order ASC");
 $categories = $stmtCats->fetchAll(PDO::FETCH_COLUMN);
 
 // --- Handle single blog view ---

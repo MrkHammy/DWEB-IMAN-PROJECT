@@ -13,94 +13,15 @@ const LANG_CONFIG = {
 };
 
 /* ══════════════════════════════════════════════
-   TUTORIALS DATA
+   TUTORIALS DATA (loaded from database)
    ══════════════════════════════════════════════ */
-const TUTORIALS = {
-    python: [
-        {
-            title: '1. Hello World',
-            desc: 'Your first Python program – printing text to the screen.',
-            code: '# Lesson 1: Hello World\n# The print() function outputs text to the console\n\nprint("Hello, World!")\nprint("Welcome to Python programming!")\n\n# Try changing the text inside the quotes!'
-        },
-        {
-            title: '2. Variables & Data Types',
-            desc: 'Learn how to store and use data in variables.',
-            code: '# Lesson 2: Variables & Data Types\n\n# Strings (text)\nname = "Fox Lab"\nprint("Name:", name)\n\n# Integers (whole numbers)\nage = 25\nprint("Age:", age)\n\n# Floats (decimal numbers)\nprice = 19.99\nprint("Price:", price)\n\n# Booleans (True/False)\nis_active = True\nprint("Active:", is_active)\n\n# Type checking\nprint("\\nType of name:", type(name))\nprint("Type of age:", type(age))'
-        },
-        {
-            title: '3. User Input',
-            desc: 'Get input from the user and use it in your program.',
-            code: '# Lesson 3: User Input\n# Note: input() reads text from the user\n\nname = "Student"  # In a real terminal, you would use: input("Enter your name: ")\nprint("Hello, " + name + "!")\n\n# Converting input to numbers\nage_str = "20"  # In real terminal: input("Enter your age: ")\nage = int(age_str)\nprint("In 5 years, you will be", age + 5, "years old")\n\n# String formatting (f-strings)\nprint(f"\\n{name} is {age} years old.")'
-        },
-        {
-            title: '4. If/Else Conditions',
-            desc: 'Make decisions in your code with conditional statements.',
-            code: '# Lesson 4: If/Else Conditions\n\nscore = 85\n\nif score >= 90:\n    grade = "A"\n    print("Excellent work!")\nelif score >= 80:\n    grade = "B"\n    print("Good job!")\nelif score >= 70:\n    grade = "C"\n    print("Satisfactory")\nelse:\n    grade = "F"\n    print("Needs improvement")\n\nprint(f"Score: {score} → Grade: {grade}")\n\n# Try changing the score to see different results!'
-        },
-        {
-            title: '5. Loops',
-            desc: 'Repeat actions with for and while loops.',
-            code: '# Lesson 5: Loops\n\n# For loop with range\nprint("Counting to 5:")\nfor i in range(1, 6):\n    print(f"  {i}")\n\n# For loop with a list\nprint("\\nFruits:")\nfruits = ["Apple", "Banana", "Cherry", "Mango"]\nfor fruit in fruits:\n    print(f"  🍎 {fruit}")\n\n# While loop\nprint("\\nCountdown:")\ncount = 5\nwhile count > 0:\n    print(f"  {count}...")\n    count -= 1\nprint("  🚀 Liftoff!")'
-        },
-        {
-            title: '6. Functions',
-            desc: 'Create reusable blocks of code with functions.',
-            code: '# Lesson 6: Functions\n\n# Basic function\ndef greet(name):\n    return f"Hello, {name}! Welcome to Fox Lab."\n\nprint(greet("Alice"))\nprint(greet("Bob"))\n\n# Function with default parameter\ndef power(base, exponent=2):\n    return base ** exponent\n\nprint(f"\\n3 squared = {power(3)}")\nprint(f"2 cubed = {power(2, 3)}")\n\n# Function that processes a list\ndef average(numbers):\n    return sum(numbers) / len(numbers)\n\nscores = [92, 87, 95, 78, 90]\nprint(f"\\nAverage score: {average(scores):.1f}")'
-        },
-        {
-            title: '7. Lists & Dictionaries',
-            desc: 'Work with collections of data.',
-            code: '# Lesson 7: Lists & Dictionaries\n\n# Lists – ordered, mutable collections\ncolors = ["red", "green", "blue"]\ncolors.append("yellow")\nprint("Colors:", colors)\nprint("First color:", colors[0])\nprint("List length:", len(colors))\n\n# List comprehension\nsquares = [x**2 for x in range(1, 6)]\nprint("Squares:", squares)\n\n# Dictionaries – key-value pairs\nstudent = {\n    "name": "Alice",\n    "age": 20,\n    "major": "Cybersecurity",\n    "gpa": 3.8\n}\n\nprint(f"\\nStudent: {student[\'name\']}")\nprint(f"Major: {student[\'major\']}")\n\n# Looping through a dictionary\nprint("\\nAll details:")\nfor key, value in student.items():\n    print(f"  {key}: {value}")'
-        },
-        {
-            title: '8. File Handling & Exceptions',
-            desc: 'Handle errors gracefully with try/except.',
-            code: '# Lesson 8: Error Handling with Try/Except\n\n# Basic try/except\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("Error: Cannot divide by zero!")\n\n# Handling multiple exceptions\ndef safe_convert(value):\n    try:\n        return int(value)\n    except ValueError:\n        print(f"  Cannot convert \'{value}\' to integer")\n        return None\n\nprint("\\nConverting values:")\nprint(f"  \'42\' → {safe_convert(\'42\')}")\nprint(f"  \'hello\' → {safe_convert(\'hello\')}")\n\n# Try/except/finally\nprint("\\nFull pattern:")\ntry:\n    numbers = [1, 2, 3]\n    print(f"  Third element: {numbers[2]}")\n    print(f"  Fourth element: {numbers[3]}")  # IndexError!\nexcept IndexError:\n    print("  Error: Index out of range!")\nfinally:\n    print("  This always runs (cleanup code goes here)")'
-        }
-    ],
-    java: [
-        {
-            title: '1. Hello World',
-            desc: 'Your first Java program – the classic Hello World.',
-            code: '// Lesson 1: Hello World\n// Every Java program needs a class and a main method\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n        System.out.println("Welcome to Java programming!");\n        \n        // Try changing the text inside the quotes!\n    }\n}'
-        },
-        {
-            title: '2. Variables & Data Types',
-            desc: 'Learn about Java\'s typed variable system.',
-            code: '// Lesson 2: Variables & Data Types\n\npublic class Main {\n    public static void main(String[] args) {\n        // String (text)\n        String name = "Fox Lab";\n        System.out.println("Name: " + name);\n        \n        // int (whole numbers)\n        int age = 25;\n        System.out.println("Age: " + age);\n        \n        // double (decimal numbers)\n        double price = 19.99;\n        System.out.println("Price: " + price);\n        \n        // boolean (true/false)\n        boolean isActive = true;\n        System.out.println("Active: " + isActive);\n        \n        // char (single character)\n        char grade = \'A\';\n        System.out.println("Grade: " + grade);\n        \n        // Type info\n        System.out.println("\\nname is a " + name.getClass().getSimpleName());\n    }\n}'
-        },
-        {
-            title: '3. If/Else Conditions',
-            desc: 'Control the flow of your program with conditions.',
-            code: '// Lesson 3: If/Else Conditions\n\npublic class Main {\n    public static void main(String[] args) {\n        int score = 85;\n        String grade;\n        \n        if (score >= 90) {\n            grade = "A";\n            System.out.println("Excellent work!");\n        } else if (score >= 80) {\n            grade = "B";\n            System.out.println("Good job!");\n        } else if (score >= 70) {\n            grade = "C";\n            System.out.println("Satisfactory");\n        } else {\n            grade = "F";\n            System.out.println("Needs improvement");\n        }\n        \n        System.out.println("Score: " + score + " → Grade: " + grade);\n        \n        // Try changing the score to see different results!\n    }\n}'
-        },
-        {
-            title: '4. Loops',
-            desc: 'Repeat actions with for and while loops.',
-            code: '// Lesson 4: Loops\n\npublic class Main {\n    public static void main(String[] args) {\n        // For loop\n        System.out.println("Counting to 5:");\n        for (int i = 1; i <= 5; i++) {\n            System.out.println("  " + i);\n        }\n        \n        // Enhanced for loop (for-each)\n        System.out.println("\\nFruits:");\n        String[] fruits = {"Apple", "Banana", "Cherry", "Mango"};\n        for (String fruit : fruits) {\n            System.out.println("  \\uD83C\\uDF4E " + fruit);\n        }\n        \n        // While loop\n        System.out.println("\\nCountdown:");\n        int count = 5;\n        while (count > 0) {\n            System.out.println("  " + count + "...");\n            count--;\n        }\n        System.out.println("  \\uD83D\\uDE80 Liftoff!");\n    }\n}'
-        },
-        {
-            title: '5. Methods (Functions)',
-            desc: 'Create reusable methods in Java.',
-            code: '// Lesson 5: Methods\n\npublic class Main {\n    \n    // Method that returns a String\n    public static String greet(String name) {\n        return "Hello, " + name + "! Welcome to Fox Lab.";\n    }\n    \n    // Method with a default-like behavior (overloading)\n    public static int power(int base) {\n        return base * base;  // default: squared\n    }\n    \n    public static int power(int base, int exponent) {\n        int result = 1;\n        for (int i = 0; i < exponent; i++) {\n            result *= base;\n        }\n        return result;\n    }\n    \n    // Method that processes an array\n    public static double average(int[] numbers) {\n        int sum = 0;\n        for (int n : numbers) sum += n;\n        return (double) sum / numbers.length;\n    }\n    \n    public static void main(String[] args) {\n        System.out.println(greet("Alice"));\n        System.out.println(greet("Bob"));\n        \n        System.out.println("\\n3 squared = " + power(3));\n        System.out.println("2 cubed = " + power(2, 3));\n        \n        int[] scores = {92, 87, 95, 78, 90};\n        System.out.printf("\\nAverage score: %.1f%n", average(scores));\n    }\n}'
-        },
-        {
-            title: '6. Arrays & ArrayLists',
-            desc: 'Work with fixed-size arrays and dynamic ArrayLists.',
-            code: 'import java.util.ArrayList;\nimport java.util.Collections;\n\n// Lesson 6: Arrays & ArrayLists\n\npublic class Main {\n    public static void main(String[] args) {\n        // Fixed-size array\n        String[] colors = {"red", "green", "blue"};\n        System.out.println("Array length: " + colors.length);\n        System.out.println("First color: " + colors[0]);\n        \n        // ArrayList – dynamic size\n        ArrayList<String> fruits = new ArrayList<>();\n        fruits.add("Apple");\n        fruits.add("Banana");\n        fruits.add("Cherry");\n        fruits.add("Mango");\n        \n        System.out.println("\\nFruits: " + fruits);\n        System.out.println("Size: " + fruits.size());\n        \n        // Sort\n        Collections.sort(fruits);\n        System.out.println("Sorted: " + fruits);\n        \n        // Remove\n        fruits.remove("Banana");\n        System.out.println("After remove: " + fruits);\n        \n        // Check if contains\n        System.out.println("Has Apple? " + fruits.contains("Apple"));\n    }\n}'
-        },
-        {
-            title: '7. Classes & Objects (OOP)',
-            desc: 'Introduction to Object-Oriented Programming in Java.',
-            code: '// Lesson 7: Classes & Objects\n\npublic class Main {\n    \n    // Inner class: Student\n    static class Student {\n        String name;\n        int age;\n        String major;\n        double gpa;\n        \n        // Constructor\n        Student(String name, int age, String major, double gpa) {\n            this.name = name;\n            this.age = age;\n            this.major = major;\n            this.gpa = gpa;\n        }\n        \n        // Method\n        String getInfo() {\n            return name + " | Age: " + age + " | " + major + " | GPA: " + gpa;\n        }\n        \n        boolean isHonors() {\n            return gpa >= 3.5;\n        }\n    }\n    \n    public static void main(String[] args) {\n        // Create objects\n        Student s1 = new Student("Alice", 20, "Cybersecurity", 3.8);\n        Student s2 = new Student("Bob", 22, "Computer Science", 3.2);\n        \n        System.out.println(s1.getInfo());\n        System.out.println("  Honors? " + s1.isHonors());\n        \n        System.out.println(s2.getInfo());\n        System.out.println("  Honors? " + s2.isHonors());\n    }\n}'
-        },
-        {
-            title: '8. Exception Handling',
-            desc: 'Handle errors gracefully with try/catch in Java.',
-            code: '// Lesson 8: Exception Handling\n\npublic class Main {\n    public static void main(String[] args) {\n        // Basic try/catch\n        try {\n            int result = 10 / 0;\n        } catch (ArithmeticException e) {\n            System.out.println("Error: Cannot divide by zero!");\n        }\n        \n        // Handling multiple exceptions\n        System.out.println("\\nConverting values:");\n        String[] values = {"42", "hello", "99"};\n        \n        for (String val : values) {\n            try {\n                int num = Integer.parseInt(val);\n                System.out.println("  \'" + val + "\' → " + num);\n            } catch (NumberFormatException e) {\n                System.out.println("  \'" + val + "\' → Cannot convert!");\n            }\n        }\n        \n        // Try/catch/finally\n        System.out.println("\\nFull pattern:");\n        try {\n            int[] numbers = {1, 2, 3};\n            System.out.println("  Third element: " + numbers[2]);\n            System.out.println("  Fourth element: " + numbers[3]);\n        } catch (ArrayIndexOutOfBoundsException e) {\n            System.out.println("  Error: Index out of range!");\n        } finally {\n            System.out.println("  This always runs (cleanup code goes here)");\n        }\n    }\n}'
-        }
-    ]
-};
+let TUTORIALS = { python: [], java: [] };
+
+// Fetch tutorials from DB on page load
+fetch('../api/tutorials.php')
+    .then(res => res.json())
+    .then(data => { TUTORIALS = data; })
+    .catch(err => console.error('Failed to load tutorials:', err));
 
 document.addEventListener('DOMContentLoaded', () => {
     const editor = document.getElementById('codeEditor');

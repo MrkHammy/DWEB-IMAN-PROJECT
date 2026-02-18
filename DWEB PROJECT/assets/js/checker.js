@@ -3,6 +3,13 @@
  * Real-time password strength analysis
  */
 
+// Load weak passwords from database on page load
+window._weakPasswords = [];
+fetch('../api/weak_passwords.php')
+    .then(res => res.json())
+    .then(data => { window._weakPasswords = data; })
+    .catch(err => console.error('Failed to load weak passwords:', err));
+
 // Real-time analysis on input
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('passwordInput');
@@ -142,43 +149,9 @@ function analyzePassword() {
     else if (passedCount === 4) strengthLevel = 'Strong';
     else strengthLevel = 'Very Strong';
 
-    // Simulate compromise check against known breached passwords
+    // Check against known breached passwords (loaded from DB)
     const compromiseStatus = document.getElementById('compromiseStatus');
-    const commonPasswords = [
-        // Top leaked passwords (various breach databases)
-        'password', '123456', '12345678', '123456789', '1234567890',
-        'qwerty', 'abc123', 'password1', 'password123', 'admin',
-        'letmein', 'welcome', 'monkey', 'dragon', 'master',
-        'login', 'princess', 'football', 'shadow', 'sunshine',
-        'trustno1', 'iloveyou', 'batman', 'access', 'hello',
-        'charlie', 'donald', '123123', '654321', '666666',
-        '111111', '000000', '121212', 'qwerty123', 'password1!',
-        'aa123456', 'qwertyuiop', '1q2w3e4r', '1qaz2wsx',
-        'zaq12wsx', 'pass@123', 'p@ssw0rd', 'p@ssword', 'passw0rd',
-        'test123', 'test1234', 'changeme', 'secret', 'root',
-        'toor', 'pa$$word', 'pa$$w0rd', 'guest', 'default',
-        // Common keyboard patterns
-        'qazwsx', 'asdfgh', 'zxcvbn', '1234qwer', 'qwer1234',
-        'asdf1234', '!@#$%^&*', '12345', '123456a', 'a123456',
-        // Common names / words
-        'michael', 'jennifer', 'jordan', 'harley', 'robert',
-        'thomas', 'hockey', 'ranger', 'daniel', 'starwars',
-        'klaster', 'george', 'computer', 'michelle', 'jessica',
-        'pepper', 'freedom', 'thunder', 'ginger', 'hammer',
-        'silver', 'summer', 'internet', 'whatever', 'baseball',
-        'soccer', 'killer', 'hunter', 'andrew', 'tigger',
-        'buster', 'joshua', 'matrix', 'superman', 'samsung',
-        'pokemon', 'corvette', 'mercedes', 'chelsea', 'arsenal',
-        // Year-based
-        'password2024', 'password2025', 'password2026',
-        'spring2025', 'summer2025', 'winter2025', 'fall2025',
-        'spring2026', 'winter2026', 'jan2026', 'feb2026',
-        // Company / service defaults
-        'admin123', 'admin1234', 'root123', 'user123', 'test',
-        'guest123', 'oracle', 'mysql', 'postgres', 'cisco',
-        'ubnt', 'alpine', 'vagrant', 'raspberry'
-    ];
-    const isCompromised = commonPasswords.includes(password.toLowerCase());
+    const isCompromised = window._weakPasswords && window._weakPasswords.includes(password.toLowerCase());
     
     if (isCompromised) {
         compromiseStatus.innerHTML = '<span style="color:#e74c3c;font-weight:600;">⚠ This password has been found in known breach databases!</span>';

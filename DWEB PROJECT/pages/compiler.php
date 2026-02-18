@@ -70,16 +70,15 @@ if (isset($_GET['id'])) {
 $stmtCourses = $pdo->query("SELECT * FROM courses ORDER BY id ASC LIMIT 3");
 $courses = $stmtCourses->fetchAll();
 
-// Language extensions
-$langIcons = [
-    'python' => 'fab fa-python',
-    'java' => 'fab fa-java',
-];
-
-$langVersions = [
-    'python' => 'Python 3.10',
-    'java' => 'Java 15',
-];
+// Language config (from DB)
+$stmtLang = $pdo->query("SELECT slug, label, icon FROM languages ORDER BY id ASC");
+$langRows = $stmtLang->fetchAll();
+$langIcons = [];
+$langVersions = [];
+foreach ($langRows as $lr) {
+    $langIcons[$lr['slug']] = $lr['icon'];
+    $langVersions[$lr['slug']] = $lr['label'];
+}
 
 $extraScripts = ['compiler.js'];
 include __DIR__ . '/../includes/header.php';
@@ -199,27 +198,11 @@ include __DIR__ . '/../includes/header.php';
                     <h3><i class="fas fa-terminal" style="margin-right:8px;color:var(--accent);"></i>Quick Reference: <?php echo ucfirst($currentProject['language'] ?? 'Python'); ?></h3>
                     <div class="quick-ref-list">
                         <?php
-                        $quickRef = [
-                            'python' => [
-                                'print("Hello")' => 'Output text',
-                                'input("Enter: ")' => 'Read user input',
-                                'len(list)' => 'Get length',
-                                'for i in range(n):' => 'Loop n times',
-                                'def func():' => 'Define function',
-                                'if condition:' => 'Conditional',
-                            ],
-                            'java' => [
-                                'System.out.println()' => 'Output text',
-                                'int x = 5;' => 'Variable',
-                                'arr.length' => 'Array length',
-                                'for (int i=0; i<n; i++)' => 'Loop',
-                                'public void fn()' => 'Method',
-                                'if (cond) {}' => 'Conditional',
-                            ],
-                        ];
                         $lang = $currentProject['language'] ?? 'python';
-                        $cmds = $quickRef[$lang] ?? $quickRef['python'];
-                        foreach ($cmds as $cmd => $desc): ?>
+                        $stmtQR = $pdo->prepare("SELECT qr.command, qr.description FROM quick_refs qr JOIN languages l ON qr.language_id = l.id WHERE l.slug = :lang ORDER BY qr.display_order ASC");
+                        $stmtQR->execute([':lang' => $lang]);
+                        $cmds = $stmtQR->fetchAll();
+                        foreach ($cmds as $qr): $cmd = $qr['command']; $desc = $qr['description']; ?>
                         <div class="quick-ref-item">
                             <code><?php echo $cmd; ?></code>
                             <span><?php echo e($desc); ?></span>

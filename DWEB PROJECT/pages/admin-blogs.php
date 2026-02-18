@@ -102,20 +102,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_blog'])) {
                 $pdo->exec("UPDATE blogs SET is_featured = 0");
             }
 
+            // Resolve category_id from category name
+            $stmtCatId = $pdo->prepare("SELECT id FROM categories WHERE name = :name LIMIT 1");
+            $stmtCatId->execute([':name' => $category]);
+            $categoryId = $stmtCatId->fetchColumn() ?: null;
+
             if ($editId > 0) {
-                $stmt = $pdo->prepare("UPDATE blogs SET title = :title, excerpt = :excerpt, content = :content, category = :category, author = :author, author_org = :author_org, image_url = :img, fb_link = :fb, read_time = :rt, is_featured = :feat, published_at = :pub WHERE id = :id");
+                $stmt = $pdo->prepare("UPDATE blogs SET title = :title, excerpt = :excerpt, content = :content, category = :category, category_id = :cat_id, author = :author, author_org = :author_org, image_url = :img, fb_link = :fb, read_time = :rt, is_featured = :feat, published_at = :pub WHERE id = :id");
                 $stmt->execute([
                     ':title' => $title, ':excerpt' => $excerpt, ':content' => $content,
-                    ':category' => $category, ':author' => $author, ':author_org' => $authorOrg,
+                    ':category' => $category, ':cat_id' => $categoryId, ':author' => $author, ':author_org' => $authorOrg,
                     ':img' => $imageUrl, ':fb' => $fbLink, ':rt' => $readTime,
                     ':feat' => $isFeatured, ':pub' => $publishedAt, ':id' => $editId
                 ]);
                 $message = 'Blog post updated successfully.';
             } else {
-                $stmt = $pdo->prepare("INSERT INTO blogs (title, excerpt, content, category, author, author_org, image_url, fb_link, read_time, is_featured, published_at) VALUES (:title, :excerpt, :content, :category, :author, :author_org, :img, :fb, :rt, :feat, :pub)");
+                $stmt = $pdo->prepare("INSERT INTO blogs (title, excerpt, content, category, category_id, author, author_org, image_url, fb_link, read_time, is_featured, published_at) VALUES (:title, :excerpt, :content, :category, :cat_id, :author, :author_org, :img, :fb, :rt, :feat, :pub)");
                 $stmt->execute([
                     ':title' => $title, ':excerpt' => $excerpt, ':content' => $content,
-                    ':category' => $category, ':author' => $author, ':author_org' => $authorOrg,
+                    ':category' => $category, ':cat_id' => $categoryId, ':author' => $author, ':author_org' => $authorOrg,
                     ':img' => $imageUrl, ':fb' => $fbLink, ':rt' => $readTime,
                     ':feat' => $isFeatured, ':pub' => $publishedAt
                 ]);
@@ -136,8 +141,8 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
 
 $allBlogs = $pdo->query("SELECT id, title, category, author, image_url, is_featured, views, published_at FROM blogs ORDER BY published_at DESC")->fetchAll();
 
-// Categories for dropdown
-$catOptions = ['Technology', 'Threats', 'Best Practices', 'Privacy', 'Cloud Security', 'Career'];
+// Categories for dropdown (from DB)
+$catOptions = $pdo->query("SELECT name FROM categories ORDER BY display_order ASC")->fetchAll(PDO::FETCH_COLUMN);
 
 include __DIR__ . '/../includes/header.php';
 ?>
