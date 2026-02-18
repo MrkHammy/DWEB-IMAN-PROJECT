@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     excerpt     TEXT,
     content     LONGTEXT NOT NULL,
     category    VARCHAR(100) DEFAULT 'Technology',
+    category_id INT DEFAULT NULL,
     author      VARCHAR(150) NOT NULL,
     author_org  VARCHAR(200) DEFAULT NULL,
     image_url   VARCHAR(500) DEFAULT NULL,
@@ -316,6 +317,7 @@ CREATE TABLE IF NOT EXISTS projects (
     user_id     INT DEFAULT NULL,
     filename    VARCHAR(255) NOT NULL,
     language    VARCHAR(50) DEFAULT 'python',
+    language_id INT DEFAULT NULL,
     code        LONGTEXT,
     is_recent   TINYINT(1) DEFAULT 0,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -1976,3 +1978,174 @@ INSERT INTO courses (title, language, image_url) VALUES
 -- ----------------------------------------------------------
 CREATE OR REPLACE VIEW term_cat_counts AS
 SELECT category, COUNT(*) as term_count FROM terms GROUP BY category;
+
+-- ----------------------------------------------------------
+-- 12. Blog Categories (normalized lookup)
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS categories (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    name          VARCHAR(100) NOT NULL UNIQUE,
+    display_order INT DEFAULT 0
+) ENGINE=InnoDB;
+
+INSERT INTO categories (name, display_order) VALUES
+('Technology', 1),
+('Threats', 2),
+('Best Practices', 3),
+('Privacy', 4),
+('Cloud Security', 5),
+('Career', 6);
+
+-- ----------------------------------------------------------
+-- 13. Weak / Compromised Passwords
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS weak_passwords (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    password VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+INSERT INTO weak_passwords (password) VALUES
+('password'),('123456'),('12345678'),('123456789'),('1234567890'),
+('qwerty'),('abc123'),('password1'),('password123'),('admin'),
+('letmein'),('welcome'),('monkey'),('dragon'),('master'),
+('login'),('princess'),('football'),('shadow'),('sunshine'),
+('trustno1'),('iloveyou'),('batman'),('access'),('hello'),
+('charlie'),('donald'),('123123'),('654321'),('666666'),
+('111111'),('000000'),('121212'),('qwerty123'),('password1!'),
+('aa123456'),('qwertyuiop'),('1q2w3e4r'),('1qaz2wsx'),
+('zaq12wsx'),('pass@123'),('p@ssw0rd'),('p@ssword'),('passw0rd'),
+('test123'),('test1234'),('changeme'),('secret'),('root'),
+('toor'),('pa$$word'),('pa$$w0rd'),('guest'),('default'),
+('qazwsx'),('asdfgh'),('zxcvbn'),('1234qwer'),('qwer1234'),
+('asdf1234'),('!@#$%^&*'),('12345'),('123456a'),('a123456'),
+('michael'),('jennifer'),('jordan'),('harley'),('robert'),
+('thomas'),('hockey'),('ranger'),('daniel'),('starwars'),
+('klaster'),('george'),('computer'),('michelle'),('jessica'),
+('pepper'),('freedom'),('thunder'),('ginger'),('hammer'),
+('silver'),('summer'),('internet'),('whatever'),('baseball'),
+('soccer'),('killer'),('hunter'),('andrew'),('tigger'),
+('buster'),('joshua'),('matrix'),('superman'),('samsung'),
+('pokemon'),('corvette'),('mercedes'),('chelsea'),('arsenal'),
+('password2024'),('password2025'),('password2026'),
+('spring2025'),('summer2025'),('winter2025'),('fall2025'),
+('spring2026'),('winter2026'),('jan2026'),('feb2026'),
+('admin123'),('admin1234'),('root123'),('user123'),('test'),
+('guest123'),('oracle'),('mysql'),('postgres'),('cisco'),
+('ubnt'),('alpine'),('vagrant'),('raspberry');
+
+-- ----------------------------------------------------------
+-- 14. Compiler Languages
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS languages (
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    slug      VARCHAR(50) NOT NULL UNIQUE,
+    label     VARCHAR(100) NOT NULL,
+    version   VARCHAR(20) DEFAULT NULL,
+    icon      VARCHAR(100) DEFAULT 'fas fa-file-code'
+) ENGINE=InnoDB;
+
+INSERT INTO languages (slug, label, version, icon) VALUES
+('python', 'Python 3.10', '3.10.0', 'fab fa-python'),
+('java', 'Java 15', '15.0.2', 'fab fa-java');
+
+-- ----------------------------------------------------------
+-- 15. Quick Reference Commands
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS quick_refs (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    lang_slug     VARCHAR(50) NOT NULL,
+    language_id   INT DEFAULT NULL,
+    command       VARCHAR(255) NOT NULL,
+    description   VARCHAR(255) NOT NULL,
+    display_order INT DEFAULT 0,
+    FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO quick_refs (lang_slug, command, description, display_order) VALUES
+('python', 'print("Hello")', 'Output text', 1),
+('python', 'input("Enter: ")', 'Read user input', 2),
+('python', 'len(list)', 'Get length', 3),
+('python', 'for i in range(n):', 'Loop n times', 4),
+('python', 'def func():', 'Define function', 5),
+('python', 'if condition:', 'Conditional', 6),
+('java', 'System.out.println()', 'Output text', 1),
+('java', 'int x = 5;', 'Variable', 2),
+('java', 'arr.length', 'Array length', 3),
+('java', 'for (int i=0; i<n; i++)', 'Loop', 4),
+('java', 'public void fn()', 'Method', 5),
+('java', 'if (cond) {}', 'Conditional', 6);
+
+-- ----------------------------------------------------------
+-- 16. Tutorials (Compiler lessons)
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS tutorials (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    lang_slug     VARCHAR(50) NOT NULL,
+    language_id   INT DEFAULT NULL,
+    title         VARCHAR(255) NOT NULL,
+    description   VARCHAR(500) DEFAULT NULL,
+    code          LONGTEXT NOT NULL,
+    display_order INT DEFAULT 0,
+    FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO tutorials (lang_slug, title, description, code, display_order) VALUES
+('python', '1. Hello World', 'Your first Python program – printing text to the screen.',
+ '# Lesson 1: Hello World\n# The print() function outputs text to the console\n\nprint(\"Hello, World!\")\nprint(\"Welcome to Python programming!\")\n\n# Try changing the text inside the quotes!', 1),
+
+('python', '2. Variables & Data Types', 'Learn how to store and use data in variables.',
+ '# Lesson 2: Variables & Data Types\n\n# Strings (text)\nname = \"Fox Lab\"\nprint(\"Name:\", name)\n\n# Integers (whole numbers)\nage = 25\nprint(\"Age:\", age)\n\n# Floats (decimal numbers)\nprice = 19.99\nprint(\"Price:\", price)\n\n# Booleans (True/False)\nis_active = True\nprint(\"Active:\", is_active)\n\n# Type checking\nprint(\"\\nType of name:\", type(name))\nprint(\"Type of age:\", type(age))', 2),
+
+('python', '3. User Input', 'Get input from the user and use it in your program.',
+ '# Lesson 3: User Input\n# Note: input() reads text from the user\n\nname = \"Student\"  # In a real terminal, you would use: input(\"Enter your name: \")\nprint(\"Hello, \" + name + \"!\")\n\n# Converting input to numbers\nage_str = \"20\"  # In real terminal: input(\"Enter your age: \")\nage = int(age_str)\nprint(\"In 5 years, you will be\", age + 5, \"years old\")\n\n# String formatting (f-strings)\nprint(f\"\\n{name} is {age} years old.\")', 3),
+
+('python', '4. If/Else Conditions', 'Make decisions in your code with conditional statements.',
+ '# Lesson 4: If/Else Conditions\n\nscore = 85\n\nif score >= 90:\n    grade = \"A\"\n    print(\"Excellent work!\")\nelif score >= 80:\n    grade = \"B\"\n    print(\"Good job!\")\nelif score >= 70:\n    grade = \"C\"\n    print(\"Satisfactory\")\nelse:\n    grade = \"F\"\n    print(\"Needs improvement\")\n\nprint(f\"Score: {score} → Grade: {grade}\")\n\n# Try changing the score to see different results!', 4),
+
+('python', '5. Loops', 'Repeat actions with for and while loops.',
+ '# Lesson 5: Loops\n\n# For loop with range\nprint(\"Counting to 5:\")\nfor i in range(1, 6):\n    print(f\"  {i}\")\n\n# For loop with a list\nprint(\"\\nFruits:\")\nfruits = [\"Apple\", \"Banana\", \"Cherry\", \"Mango\"]\nfor fruit in fruits:\n    print(f\"  🍎 {fruit}\")\n\n# While loop\nprint(\"\\nCountdown:\")\ncount = 5\nwhile count > 0:\n    print(f\"  {count}...\")\n    count -= 1\nprint(\"  🚀 Liftoff!\")', 5),
+
+('python', '6. Functions', 'Create reusable blocks of code with functions.',
+ '# Lesson 6: Functions\n\n# Basic function\ndef greet(name):\n    return f\"Hello, {name}! Welcome to Fox Lab.\"\n\nprint(greet(\"Alice\"))\nprint(greet(\"Bob\"))\n\n# Function with default parameter\ndef power(base, exponent=2):\n    return base ** exponent\n\nprint(f\"\\n3 squared = {power(3)}\")\nprint(f\"2 cubed = {power(2, 3)}\")\n\n# Function that processes a list\ndef average(numbers):\n    return sum(numbers) / len(numbers)\n\nscores = [92, 87, 95, 78, 90]\nprint(f\"\\nAverage score: {average(scores):.1f}\")', 6),
+
+('python', '7. Lists & Dictionaries', 'Work with collections of data.',
+ '# Lesson 7: Lists & Dictionaries\n\n# Lists – ordered, mutable collections\ncolors = [\"red\", \"green\", \"blue\"]\ncolors.append(\"yellow\")\nprint(\"Colors:\", colors)\nprint(\"First color:\", colors[0])\nprint(\"List length:\", len(colors))\n\n# List comprehension\nsquares = [x**2 for x in range(1, 6)]\nprint(\"Squares:\", squares)\n\n# Dictionaries – key-value pairs\nstudent = {\n    \"name\": \"Alice\",\n    \"age\": 20,\n    \"major\": \"Cybersecurity\",\n    \"gpa\": 3.8\n}\n\nprint(f\"\\nStudent: {student[''name'']}\")\nprint(f\"Major: {student[''major'']}\")\n\n# Looping through a dictionary\nprint(\"\\nAll details:\")\nfor key, value in student.items():\n    print(f\"  {key}: {value}\")', 7),
+
+('python', '8. File Handling & Exceptions', 'Handle errors gracefully with try/except.',
+ '# Lesson 8: Error Handling with Try/Except\n\n# Basic try/except\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print(\"Error: Cannot divide by zero!\")\n\n# Handling multiple exceptions\ndef safe_convert(value):\n    try:\n        return int(value)\n    except ValueError:\n        print(f\"  Cannot convert ''{value}'' to integer\")\n        return None\n\nprint(\"\\nConverting values:\")\nprint(f\"  ''42'' → {safe_convert(''42'')}\")\nprint(f\"  ''hello'' → {safe_convert(''hello'')}\")\n\n# Try/except/finally\nprint(\"\\nFull pattern:\")\ntry:\n    numbers = [1, 2, 3]\n    print(f\"  Third element: {numbers[2]}\")\n    print(f\"  Fourth element: {numbers[3]}\")  # IndexError!\nexcept IndexError:\n    print(\"  Error: Index out of range!\")\nfinally:\n    print(\"  This always runs (cleanup code goes here)\")', 8),
+
+('java', '1. Hello World', 'Your first Java program – the classic Hello World.',
+ '// Lesson 1: Hello World\n// Every Java program needs a class and a main method\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n        System.out.println(\"Welcome to Java programming!\");\n        \n        // Try changing the text inside the quotes!\n    }\n}', 1),
+
+('java', '2. Variables & Data Types', 'Learn about Java''s typed variable system.',
+ '// Lesson 2: Variables & Data Types\n\npublic class Main {\n    public static void main(String[] args) {\n        // String (text)\n        String name = \"Fox Lab\";\n        System.out.println(\"Name: \" + name);\n        \n        // int (whole numbers)\n        int age = 25;\n        System.out.println(\"Age: \" + age);\n        \n        // double (decimal numbers)\n        double price = 19.99;\n        System.out.println(\"Price: \" + price);\n        \n        // boolean (true/false)\n        boolean isActive = true;\n        System.out.println(\"Active: \" + isActive);\n        \n        // char (single character)\n        char grade = ''A'';\n        System.out.println(\"Grade: \" + grade);\n        \n        // Type info\n        System.out.println(\"\\nname is a \" + name.getClass().getSimpleName());\n    }\n}', 2),
+
+('java', '3. If/Else Conditions', 'Control the flow of your program with conditions.',
+ '// Lesson 3: If/Else Conditions\n\npublic class Main {\n    public static void main(String[] args) {\n        int score = 85;\n        String grade;\n        \n        if (score >= 90) {\n            grade = \"A\";\n            System.out.println(\"Excellent work!\");\n        } else if (score >= 80) {\n            grade = \"B\";\n            System.out.println(\"Good job!\");\n        } else if (score >= 70) {\n            grade = \"C\";\n            System.out.println(\"Satisfactory\");\n        } else {\n            grade = \"F\";\n            System.out.println(\"Needs improvement\");\n        }\n        \n        System.out.println(\"Score: \" + score + \" → Grade: \" + grade);\n        \n        // Try changing the score to see different results!\n    }\n}', 3),
+
+('java', '4. Loops', 'Repeat actions with for and while loops.',
+ '// Lesson 4: Loops\n\npublic class Main {\n    public static void main(String[] args) {\n        // For loop\n        System.out.println(\"Counting to 5:\");\n        for (int i = 1; i <= 5; i++) {\n            System.out.println(\"  \" + i);\n        }\n        \n        // Enhanced for loop (for-each)\n        System.out.println(\"\\nFruits:\");\n        String[] fruits = {\"Apple\", \"Banana\", \"Cherry\", \"Mango\"};\n        for (String fruit : fruits) {\n            System.out.println(\"  \\uD83C\\uDF4E \" + fruit);\n        }\n        \n        // While loop\n        System.out.println(\"\\nCountdown:\");\n        int count = 5;\n        while (count > 0) {\n            System.out.println(\"  \" + count + \"...\");\n            count--;\n        }\n        System.out.println(\"  \\uD83D\\uDE80 Liftoff!\");\n    }\n}', 4),
+
+('java', '5. Methods (Functions)', 'Create reusable methods in Java.',
+ '// Lesson 5: Methods\n\npublic class Main {\n    \n    // Method that returns a String\n    public static String greet(String name) {\n        return \"Hello, \" + name + \"! Welcome to Fox Lab.\";\n    }\n    \n    // Method with a default-like behavior (overloading)\n    public static int power(int base) {\n        return base * base;  // default: squared\n    }\n    \n    public static int power(int base, int exponent) {\n        int result = 1;\n        for (int i = 0; i < exponent; i++) {\n            result *= base;\n        }\n        return result;\n    }\n    \n    // Method that processes an array\n    public static double average(int[] numbers) {\n        int sum = 0;\n        for (int n : numbers) sum += n;\n        return (double) sum / numbers.length;\n    }\n    \n    public static void main(String[] args) {\n        System.out.println(greet(\"Alice\"));\n        System.out.println(greet(\"Bob\"));\n        \n        System.out.println(\"\\n3 squared = \" + power(3));\n        System.out.println(\"2 cubed = \" + power(2, 3));\n        \n        int[] scores = {92, 87, 95, 78, 90};\n        System.out.printf(\"\\nAverage score: %.1f%n\", average(scores));\n    }\n}', 5),
+
+('java', '6. Arrays & ArrayLists', 'Work with fixed-size arrays and dynamic ArrayLists.',
+ 'import java.util.ArrayList;\nimport java.util.Collections;\n\n// Lesson 6: Arrays & ArrayLists\n\npublic class Main {\n    public static void main(String[] args) {\n        // Fixed-size array\n        String[] colors = {\"red\", \"green\", \"blue\"};\n        System.out.println(\"Array length: \" + colors.length);\n        System.out.println(\"First color: \" + colors[0]);\n        \n        // ArrayList – dynamic size\n        ArrayList<String> fruits = new ArrayList<>();\n        fruits.add(\"Apple\");\n        fruits.add(\"Banana\");\n        fruits.add(\"Cherry\");\n        fruits.add(\"Mango\");\n        \n        System.out.println(\"\\nFruits: \" + fruits);\n        System.out.println(\"Size: \" + fruits.size());\n        \n        // Sort\n        Collections.sort(fruits);\n        System.out.println(\"Sorted: \" + fruits);\n        \n        // Remove\n        fruits.remove(\"Banana\");\n        System.out.println(\"After remove: \" + fruits);\n        \n        // Check if contains\n        System.out.println(\"Has Apple? \" + fruits.contains(\"Apple\"));\n    }\n}', 6),
+
+('java', '7. Classes & Objects (OOP)', 'Introduction to Object-Oriented Programming in Java.',
+ '// Lesson 7: Classes & Objects\n\npublic class Main {\n    \n    // Inner class: Student\n    static class Student {\n        String name;\n        int age;\n        String major;\n        double gpa;\n        \n        // Constructor\n        Student(String name, int age, String major, double gpa) {\n            this.name = name;\n            this.age = age;\n            this.major = major;\n            this.gpa = gpa;\n        }\n        \n        // Method\n        String getInfo() {\n            return name + \" | Age: \" + age + \" | \" + major + \" | GPA: \" + gpa;\n        }\n        \n        boolean isHonors() {\n            return gpa >= 3.5;\n        }\n    }\n    \n    public static void main(String[] args) {\n        // Create objects\n        Student s1 = new Student(\"Alice\", 20, \"Cybersecurity\", 3.8);\n        Student s2 = new Student(\"Bob\", 22, \"Computer Science\", 3.2);\n        \n        System.out.println(s1.getInfo());\n        System.out.println(\"  Honors? \" + s1.isHonors());\n        \n        System.out.println(s2.getInfo());\n        System.out.println(\"  Honors? \" + s2.isHonors());\n    }\n}', 7),
+
+('java', '8. Exception Handling', 'Handle errors gracefully with try/catch in Java.',
+ '// Lesson 8: Exception Handling\n\npublic class Main {\n    public static void main(String[] args) {\n        // Basic try/catch\n        try {\n            int result = 10 / 0;\n        } catch (ArithmeticException e) {\n            System.out.println(\"Error: Cannot divide by zero!\");\n        }\n        \n        // Handling multiple exceptions\n        System.out.println(\"\\nConverting values:\");\n        String[] values = {\"42\", \"hello\", \"99\"};\n        \n        for (String val : values) {\n            try {\n                int num = Integer.parseInt(val);\n                System.out.println(\"  ''\" + val + \"'' → \" + num);\n            } catch (NumberFormatException e) {\n                System.out.println(\"  ''\" + val + \"'' → Cannot convert!\");\n            }\n        }\n        \n        // Try/catch/finally\n        System.out.println(\"\\nFull pattern:\");\n        try {\n            int[] numbers = {1, 2, 3};\n            System.out.println(\"  Third element: \" + numbers[2]);\n            System.out.println(\"  Fourth element: \" + numbers[3]);\n        } catch (ArrayIndexOutOfBoundsException e) {\n            System.out.println(\"  Error: Index out of range!\");\n        } finally {\n            System.out.println(\"  This always runs (cleanup code goes here)\");\n        }\n    }\n}', 8);
+
+-- ----------------------------------------------------------
+-- 17. Foreign Key Constraints (deferred – referenced tables created above)
+-- ----------------------------------------------------------
+ALTER TABLE blogs ADD CONSTRAINT fk_blogs_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL;
+ALTER TABLE projects ADD CONSTRAINT fk_projects_lang FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE SET NULL;
+
+-- Populate FK columns from text-based values
+UPDATE blogs b JOIN categories c ON b.category = c.name SET b.category_id = c.id WHERE b.category_id IS NULL;
+UPDATE projects p JOIN languages l ON p.language = l.slug SET p.language_id = l.id WHERE p.language_id IS NULL;
+UPDATE quick_refs q JOIN languages l ON q.lang_slug = l.slug SET q.language_id = l.id WHERE q.language_id IS NULL;
+UPDATE tutorials t JOIN languages l ON t.lang_slug = l.slug SET t.language_id = l.id WHERE t.language_id IS NULL;
