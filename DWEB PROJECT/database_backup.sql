@@ -1,14 +1,15 @@
 ﻿-- ============================================================
 -- Fox Lab â€“ Cybersecurity Awareness & Training Platform
 -- Complete Database Schema + Data
--- Tables: 21 | Engine: InnoDB
+-- Tables: 22 | Engine: InnoDB
 -- ============================================================
 --
--- RELATIONSHIP MAP (21 tables)
+-- RELATIONSHIP MAP (22 tables)
 -- =============================
 -- users ---+--- blogs ----------- categories
 --          |--- projects -------- languages --+-- quick_refs
 --          |--- pw_logs                       +-- tutorials
+--          weak_passwords (standalone)
 --          |--- quiz_results --- scenarios --+-- red_flags
 --          |--- bookmarks ------ terms --+   +-- indicators
 --          +--- enrollments ---- courses  +-- term_links
@@ -323,9 +324,131 @@ CREATE TABLE IF NOT EXISTS pw_logs (
     has_symbols     TINYINT(1) DEFAULT 0,
     is_compromised  TINYINT(1) DEFAULT 0,
     ip_address      VARCHAR(45) DEFAULT NULL,
-    checked_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    checked_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
+
+-- ----------------------------------------------------------
+-- 4b. Weak / Compromised Passwords (used by Password Checker)
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS weak_passwords (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    password VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
+
+INSERT INTO weak_passwords (password) VALUES
+('123456'),
+('123456789'),
+('12345678'),
+('1234567'),
+('12345'),
+('1234'),
+('123'),
+('password'),
+('password1'),
+('password123'),
+('qwerty'),
+('qwerty123'),
+('qwertyuiop'),
+('abc123'),
+('abcdef'),
+('abcd1234'),
+('111111'),
+('000000'),
+('1q2w3e4r'),
+('1qaz2wsx'),
+('letmein'),
+('welcome'),
+('welcome1'),
+('monkey'),
+('dragon'),
+('master'),
+('login'),
+('admin'),
+('admin123'),
+('administrator'),
+('root'),
+('toor'),
+('pass'),
+('test'),
+('guest'),
+('access'),
+('hello'),
+('charlie'),
+('shadow'),
+('sunshine'),
+('princess'),
+('trustno1'),
+('iloveyou'),
+('batman'),
+('football'),
+('baseball'),
+('soccer'),
+('michael'),
+('jordan'),
+('superman'),
+('hunter'),
+('hunter2'),
+('ranger'),
+('buster'),
+('thomas'),
+('robert'),
+('jennifer'),
+('jessica'),
+('ashley'),
+('amanda'),
+('daniel'),
+('andrew'),
+('joshua'),
+('matthew'),
+('starwars'),
+('passw0rd'),
+('p@ssw0rd'),
+('p@ssword'),
+('p@ss1234'),
+('zaq12wsx'),
+('!@#$%^&*'),
+('654321'),
+('987654321'),
+('qazwsx'),
+('1234qwer'),
+('google'),
+('facebook'),
+('apple'),
+('samsung'),
+('computer'),
+('internet'),
+('summer'),
+('winter'),
+('spring'),
+('flower'),
+('freedom'),
+('whatever'),
+('nothing'),
+('secret'),
+('donald'),
+('liverpool'),
+('arsenal'),
+('chelsea'),
+('barcelona'),
+('corvette'),
+('mustang'),
+('mercedes'),
+('ferrari'),
+('porsche'),
+('cheese'),
+('pepper'),
+('ginger'),
+('cookie'),
+('killer'),
+('death'),
+('matrix'),
+('solo'),
+('bond007'),
+('james'),
+('yankees'),
+('lakers'),
+('cowboys'),
+('eagles');
 
 -- ----------------------------------------------------------
 -- 5. Phishing Simulation
