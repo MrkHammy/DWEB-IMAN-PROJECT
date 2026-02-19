@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="DWEB PROJECT/IMGS/LOGO/logo.png" alt="Fox Lab Logo" width="120">
+  <img src="DWEB PROJECT/IMGS/LOGO/logo.PNG" alt="Fox Lab Logo" width="120">
 </p>
 
 <h1 align="center">Fox Lab</h1>
@@ -252,4 +252,5 @@ This project was developed as an academic requirement for **Holy Angel Universit
 <p align="center">
   <strong>Fox Lab</strong> — Empowering cybersecurity awareness through education and training.
 </p>>
+
 
