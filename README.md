@@ -235,7 +235,7 @@ DWEB PROJECT/
       <td align="center">✅</td>
       <td align="center"></td>
       <td align="center"></td>
-      <td align="center"></td>
+      <td align="center">✅</td>
       <td align="center">✅</td>
     </tr>
   </tbody>
@@ -252,5 +252,6 @@ This project was developed as an academic requirement for **Holy Angel Universit
 <p align="center">
   <strong>Fox Lab</strong> — Empowering cybersecurity awareness through education and training.
 </p>>
+
 
 
