@@ -1,14 +1,15 @@
 ﻿-- ============================================================
 -- Fox Lab â€“ Cybersecurity Awareness & Training Platform
 -- Complete Database Schema + Data
--- Tables: 22 | Engine: InnoDB
+-- Tables: 23 | Engine: InnoDB
 -- ============================================================
 --
--- RELATIONSHIP MAP (22 tables)
+-- RELATIONSHIP MAP (23 tables)
 -- =============================
 -- users ---+--- blogs ----------- categories
 --          |--- projects -------- languages --+-- quick_refs
 --          |--- pw_logs                       +-- tutorials
+--          |--- password_resets (recovery tokens)
 --          weak_passwords (standalone)
 --          |--- quiz_results --- scenarios --+-- red_flags
 --          |--- bookmarks ------ terms --+   +-- indicators
@@ -40,6 +41,19 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (full_name, email, password, role) VALUES
 ('Charlie Kirk', 'charlie@foxlab.com', '$2y$10$42j5FdVU8yLRIA./Z6DHUudyYY/X3GQzz4sRVbmEuzi1J.eSeEc4G', 'student'),
 ('Admin User', 'admin@foxlab.com', '$2y$10$42j5FdVU8yLRIA./Z6DHUudyYY/X3GQzz4sRVbmEuzi1J.eSeEc4G', 'admin');
+
+-- ----------------------------------------------------------
+-- 1b. Password Resets (Recovery tokens)
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS password_resets (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT NOT NULL,
+    token      VARCHAR(64) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    used       TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------
 -- 2. Blogs

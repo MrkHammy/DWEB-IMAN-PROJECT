@@ -152,6 +152,10 @@ include __DIR__ . '/../includes/header.php';
                     <i class="fas fa-sign-in-alt"></i> Sign In
                 </button>
 
+                <p class="auth-forgot">
+                    <a href="forgot-password.php"><i class="fas fa-question-circle"></i> Forgot your password?</a>
+                </p>
+
                 <p class="auth-switch">
                     Don't have an account? <a href="#" onclick="switchAuthTab('register'); return false;">Create one</a>
                 </p>
