@@ -196,9 +196,14 @@ img {
 .logo-text {
     font-size: 1.3rem;
     font-weight: 800;
-    color: var(--primary-dark);
     letter-spacing: 2px;
     text-transform: uppercase;
+    background: linear-gradient(270deg, #001f3f, #0074D9, #00d4ff, #0074D9, #001f3f);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: heroGradient 16s ease infinite;
 }
 
 .search-bar {
@@ -213,7 +218,7 @@ img {
     border: 1px solid var(--light-gray);
     border-radius: 25px;
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     background: var(--off-white);
     transition: var(--transition);
 }
@@ -330,7 +335,7 @@ img {
 
 .main-nav a {
     color: var(--text-primary);
-    font-size: 0.92rem;
+    font-size: 0.84rem;
     font-weight: 500;
     padding: 8px 14px;
     border-radius: var(--border-radius-sm);
@@ -357,7 +362,7 @@ img {
     border: none;
     background: transparent;
     color: var(--text-primary);
-    font-size: 0.92rem;
+    font-size: 0.84rem;
     font-weight: 500;
     padding: 8px 14px;
     border-radius: var(--border-radius-sm);
@@ -492,10 +497,18 @@ img {
     line-height: 1.2;
     color: var(--primary-dark);
     margin-bottom: 20px;
-    background: var(--gradient-main);
+    background: linear-gradient(270deg, #001f3f, #0074D9, #00d4ff, #0074D9, #001f3f);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: heroGradient 16s ease infinite;
+}
+
+@keyframes heroGradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .hero-content p {
@@ -2657,6 +2670,61 @@ a.feature-card {
 .terms-list li i {
     font-size: 0.92rem;
     color: var(--text-muted);
+}
+
+/* Pagination controls for terms lists */
+.terms-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 12px 6px;
+    flex-wrap: wrap;
+}
+
+.terms-pagination .pg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 6px;
+    border: 1px solid var(--light-gray);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.terms-pagination .pg-btn:hover:not(.disabled):not(.active) {
+    background: rgba(0, 116, 217, 0.06);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.terms-pagination .pg-btn.active {
+    background: var(--accent);
+    color: var(--white);
+    border-color: var(--accent);
+}
+
+.terms-pagination .pg-btn.disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.terms-pagination .pg-btn i {
+    font-size: 0.7rem;
+}
+
+.terms-pagination .pg-dots {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding: 0 2px;
 }
 
 .terms-sidebar-img {
@@ -6507,5 +6575,77 @@ html.dark-mode .suggestion-category {
     html.dark-mode .main-nav {
         background: #16162a;
         border-color: #2a2a3e;
+    }
+}
+
+/* ============================================================
+   Page-In & Scroll-Reveal Animations
+   ============================================================ */
+
+/* Page fade-in on load */
+main {
+    animation: pageFadeIn 0.5s ease-out both;
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-reveal: hidden by default */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered children (cards etc.) */
+.reveal-stagger > .reveal {
+    transition-delay: calc(var(--reveal-i, 0) * 0.1s);
+}
+
+/* Slide-in variants */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-left.revealed,
+.reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Scale-up variant */
+.reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.reveal-scale.revealed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    main { animation: none; }
+    .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }

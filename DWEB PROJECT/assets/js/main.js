@@ -177,4 +177,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initNavDropdown('securitySimDropdown', 'securitySimToggle');
     initNavDropdown('learnDropdown', 'learnToggle');
+
+    // ===== Scroll-Reveal Animations =====
+    // Auto-tag common sections & cards with reveal classes
+    const revealSelectors = [
+        '.hero-content', '.hero-image',
+        '.section-title', '.section-subtitle',
+        '.feature-card', '.stat-card', '.tip-card', '.tip-detail-card',
+        '.blog-card', '.partner-card',
+        '.auth-card', '.auth-image',
+        '.compiler-panel', '.tutorial-card',
+        '.term-card', '.phishing-card',
+        '.checker-section', '.recommended-section',
+        '.footer-grid',
+        '.features-grid', '.stats-grid', '.tips-grid', '.blog-grid',
+        '.partners-banner'
+    ];
+
+    revealSelectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+            if (!el.classList.contains('reveal') &&
+                !el.classList.contains('reveal-left') &&
+                !el.classList.contains('reveal-right') &&
+                !el.classList.contains('reveal-scale')) {
+                el.classList.add('reveal');
+            }
+        });
+    });
+
+    // Add stagger index to cards inside grids
+    document.querySelectorAll('.features-grid, .stats-grid, .tips-grid, .blog-grid').forEach(grid => {
+        grid.classList.add('reveal-stagger');
+        grid.querySelectorAll('.reveal').forEach((child, i) => {
+            child.style.setProperty('--reveal-i', i);
+        });
+    });
+
+    // Slide hero halves from left/right
+    const heroContent = document.querySelector('.hero-content');
+    const heroImage = document.querySelector('.hero-image');
+    if (heroContent) { heroContent.classList.remove('reveal'); heroContent.classList.add('reveal-left'); }
+    if (heroImage)   { heroImage.classList.remove('reveal');   heroImage.classList.add('reveal-right'); }
+
+    // IntersectionObserver for triggering reveals
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            observer.observe(el);
+        });
+    } else {
+        // Fallback: show everything immediately
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            el.classList.add('revealed');
+        });
+    }
 });

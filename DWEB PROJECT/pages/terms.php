@@ -202,14 +202,15 @@ include __DIR__ . '/../includes/header.php';
             <?php endforeach; ?>
         </div>
 
-        <ul class="terms-list">
-            <?php foreach ($termsList as $t): ?>
+        <ul class="terms-list" id="termsListUl">
+            <?php foreach ($termsList as $idx => $t): ?>
             <li class="<?php echo $viewTermId == $t['id'] ? 'active' : ''; ?>" onclick="window.location='terms.php?id=<?php echo $t['id']; ?><?php echo $filterCategory ? '&category=' . urlencode($filterCategory) : ''; ?><?php echo $filterLetter ? '&letter=' . urlencode($filterLetter) : ''; ?>'">
                 <?php echo e($t['title']); ?>
                 <i class="fas fa-chevron-right"></i>
             </li>
             <?php endforeach; ?>
         </ul>
+        <div class="terms-pagination" id="termsListPagination"></div>
 
     </aside>
 
@@ -292,7 +293,7 @@ include __DIR__ . '/../includes/header.php';
             <?php if (!empty($relatedTerms)): ?>
             <div class="related-terms-card">
                 <h3><i class="fas fa-link"></i> Related Terms</h3>
-                <ul class="related-list">
+                <ul class="related-list" id="relatedListUl">
                     <?php foreach ($relatedTerms as $rt): ?>
                     <li onclick="window.location='terms.php?id=<?php echo $rt['id']; ?>'">
                         <?php echo e($rt['title']); ?>
@@ -300,6 +301,7 @@ include __DIR__ . '/../includes/header.php';
                     </li>
                     <?php endforeach; ?>
                 </ul>
+                <div class="terms-pagination" id="relatedListPagination"></div>
             </div>
             <?php endif; ?>
 
@@ -451,6 +453,77 @@ function toggleBookmark(btn) {
         return d.innerHTML;
     }
 })();
+
+// --- Client-side Pagination ---
+function paginateList(listId, paginationId, perPage) {
+    const list = document.getElementById(listId);
+    const pag = document.getElementById(paginationId);
+    if (!list || !pag) return;
+
+    const items = Array.from(list.children);
+    const totalPages = Math.ceil(items.length / perPage);
+    if (totalPages <= 1) { pag.innerHTML = ''; return; }
+
+    // Find page that contains the active item
+    let startPage = 1;
+    items.forEach((item, i) => {
+        if (item.classList.contains('active')) {
+            startPage = Math.floor(i / perPage) + 1;
+        }
+    });
+
+    let currentPage = startPage;
+
+    function render(page) {
+        currentPage = page;
+        const start = (page - 1) * perPage;
+        const end = start + perPage;
+
+        items.forEach((item, i) => {
+            item.style.display = (i >= start && i < end) ? '' : 'none';
+        });
+
+        // Build pagination controls
+        let html = '';
+        html += `<button class="pg-btn ${page <= 1 ? 'disabled' : ''}" data-page="${page - 1}" ${page <= 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
+
+        // Smart page numbers
+        const pages = [];
+        pages.push(1);
+        if (page > 3) pages.push('...');
+        for (let p = Math.max(2, page - 1); p <= Math.min(totalPages - 1, page + 1); p++) {
+            pages.push(p);
+        }
+        if (page < totalPages - 2) pages.push('...');
+        if (totalPages > 1) pages.push(totalPages);
+
+        pages.forEach(p => {
+            if (p === '...') {
+                html += `<span class="pg-dots">…</span>`;
+            } else {
+                html += `<button class="pg-btn ${p === page ? 'active' : ''}" data-page="${p}">${p}</button>`;
+            }
+        });
+
+        html += `<button class="pg-btn ${page >= totalPages ? 'disabled' : ''}" data-page="${page + 1}" ${page >= totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
+
+        pag.innerHTML = html;
+
+        // Bind events
+        pag.querySelectorAll('.pg-btn:not(.disabled)').forEach(btn => {
+            btn.addEventListener('click', () => {
+                render(parseInt(btn.dataset.page));
+                list.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+    }
+
+    render(currentPage);
+}
+
+// Paginate sidebar terms (20 per page) and related terms (8 per page)
+paginateList('termsListUl', 'termsListPagination', 10);
+paginateList('relatedListUl', 'relatedListPagination', 8);
 </script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>
