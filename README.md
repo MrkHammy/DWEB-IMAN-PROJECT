@@ -177,7 +177,7 @@ DWEB PROJECT/
     <tbody>
       <tr>
         <td><b>Bautista, Mark Anthony</b></td>
-        <td>Wireframe Designer, GUI Developer, Backend, SQL Encoder, Documentation, Glossary of Terms</td>
+        <td>Wireframe Designer, GUI Developer, Backend Developer, SQL Encoder, Documentation, Glossary of Terms</td>
       </tr>
       <tr>
         <td><b>Bermas, Estella Mae</b></td>
@@ -189,7 +189,7 @@ DWEB PROJECT/
       </tr>
       <tr>
         <td><b>Marcelino, Princess Camille</b></td>
-        <td>Project Manager, Wireframe Designer, Backend Developer SQL Encoder, Glossary of Terms, Documentation</td>
+        <td>Project Manager, Wireframe Designer, Backend Developer, SQL Encoder, Glossary of Terms, Documentation</td>
       </tr>
       <tr>
         <td><b>Roque, Daryl John Clark</b></td>
@@ -210,6 +210,7 @@ This project was developed as an academic requirement for **Holy Angel Universit
 <p align="center">
   <strong>Fox Lab</strong> — Empowering cybersecurity awareness through education and training.
 </p>>
+
 
 
 
