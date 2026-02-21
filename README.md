@@ -164,82 +164,40 @@ DWEB PROJECT/
 
 ## 👥 Team Contributions
 
-<table>
-  <thead>
-    <tr>
-      <th align="center">Member</th>
-      <th align="center">Role(s)</th>
-      <th align="center">Wireframe</th>
-      <th align="center">GUI</th>
-      <th align="center">Backend</th>
-      <th align="center">SQL</th>
-      <th align="center">Glossary</th>
-      <th align="center">Docs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <strong>Bautista, Mark Anthony</strong>
-      </td>
-      <td>Wireframe, GUI, Documentation, SQL</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-    </tr>
-    <tr>
-      <td align="center">
-        <strong>Roque, Daryl John Clark</strong>
-      </td>
-      <td>Backend, SQL Integration, Glossary of Terms, Documentation</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-    </tr>
-    <tr>
-      <td align="center">
-        <strong>Marcelino, Princess Camille</strong>
-      </td>
-      <td>Backend, SQL Integration, Glossary of Terms, Documentation</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-    </tr>
-    <tr>
-      <td align="center">
-        <strong>Gamboa, Rodel Vincent</strong>
-      </td>
-      <td>Backend, SQL Integration, Glossary of Terms</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center"></td>
-    </tr>
-    <tr>
-      <td align="center">
-        <strong>Bermas, Estella Mae</strong>
-      </td>
-      <td>Wireframe, GUI, Documentation</td>
-      <td align="center">✅</td>
-      <td align="center">✅</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">✅</td>
-    </tr>
-  </tbody>
-</table>
+<div align="center">
+  <h2>Team Contributions</h2>
+
+  <table width="100%">
+    <thead>
+      <tr align="left" style="background-color: #24292e; color: #ffffff;">
+        <th width="30%">Member</th>
+        <th width="70%">Contributions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Bautista, Mark Anthony</b></td>
+        <td>Wireframe Designer, GUI Developer, Backend, SQL Encoder, Documentation, Glossary of Terms</td>
+      </tr>
+      <tr>
+        <td><b>Bermas, Estella Mae</b></td>
+        <td>Wireframe Designer, GUI Developer, Documentation, Glossary of Terms</td>
+      </tr>
+      <tr>
+        <td><b>Gamboa, Rodel Vincent</b></td>
+        <td>Backend, SQL Encoder, Glossary of Terms</td>
+      </tr>
+      <tr>
+        <td><b>Marcelino, Princess Camille</b></td>
+        <td>Project Manager, Wireframe Designer, Backend Developer SQL Encoder, Glossary of Terms, Documentation</td>
+      </tr>
+      <tr>
+        <td><b>Roque, Daryl John Clark</b></td>
+        <td>Backend, SQL Encoder, Glossary of Terms, Documentation</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ---
 
@@ -252,6 +210,7 @@ This project was developed as an academic requirement for **Holy Angel Universit
 <p align="center">
   <strong>Fox Lab</strong> — Empowering cybersecurity awareness through education and training.
 </p>>
+
 
 
 
