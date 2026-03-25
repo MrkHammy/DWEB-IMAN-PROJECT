@@ -125,7 +125,6 @@ include __DIR__ . '/../includes/header.php';
                 </ul>
 
                 <div class="compromise-check">
-                    <i class="fas fa-exclamation-triangle"></i>
                     <div class="check-text">
                         <strong>Compromise Check</strong>
                         <small id="compromiseStatus">Checking against known compromised password databases...</small>

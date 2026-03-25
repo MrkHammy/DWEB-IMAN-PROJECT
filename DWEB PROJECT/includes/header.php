@@ -25,6 +25,9 @@ $_flash = getFlash();
     <meta name="description" content="Fox Lab – Cybersecurity Awareness & Training Platform. Strengthen your cybersecurity awareness with phishing simulations, password testing, and educational resources.">
     <title><?php echo isset($pageTitle) ? e($pageTitle) . ' | Fox Lab' : 'Fox Lab – Cybersecurity Awareness'; ?></title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?php echo $basePath; ?>IMGS/LOGO/favicon.ico">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
